@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, Instrument_Serif } from "next/font/google";
 import { MotionProvider, ScrollProgress } from "@/components/motion/chrome";
+import { CustomCursor, PageIris } from "@/components/motion/cursor";
 import { site } from "@/content/site";
 import "./globals.css";
 
@@ -55,6 +56,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <MotionProvider>
           <ScrollProgress />
           {children}
+          <PageIris />
+          <CustomCursor />
         </MotionProvider>
       </body>
     </html>

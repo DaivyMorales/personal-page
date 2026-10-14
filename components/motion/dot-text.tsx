@@ -72,6 +72,8 @@ export function DotText({
     let running = false;
     let start = assembleOnView ? Infinity : performance.now();
     const pointer = { x: -9999, y: -9999 };
+    // Clicks send out a ring that shoves dots outward as it passes, like si.gov's.
+    const ripples: { x: number; y: number; t0: number }[] = [];
 
     /** Luminance (0–1) of the ink colour, to decide whether dots mark dark or bright areas. */
     function inkIsLight() {
@@ -165,6 +167,7 @@ export function DotText({
     }
 
     function physics(now: number) {
+      while (ripples.length && now - ripples[0].t0 > 1000) ripples.shift();
       const t = (now - start) / 1000;
       if (t < 0) return; // still waiting to assemble
       // Spring strength ramps up over the first second so the dots arrive in a sweep, not a snap.
@@ -181,6 +184,19 @@ export function DotText({
           const push = (1 - dist / radius) * 6;
           fx += (dx / dist) * push;
           fy += (dy / dist) * push;
+        }
+        for (const rp of ripples) {
+          const age = (now - rp.t0) / 1000;
+          const front = age * 520;
+          const rx = d.x - rp.x;
+          const ry = d.y - rp.y;
+          const dist = Math.sqrt(rx * rx + ry * ry) || 1;
+          const off = Math.abs(dist - front);
+          if (off < 36) {
+            const push = (1 - off / 36) * (1 - age) * 9;
+            fx += (rx / dist) * push;
+            fy += (ry / dist) * push;
+          }
         }
         d.vx = (d.vx + fx) * 0.82;
         d.vy = (d.vy + fy) * 0.82;
@@ -212,7 +228,16 @@ export function DotText({
     const onLeave = () => {
       pointer.x = pointer.y = -9999;
     };
+    const onDown = (e: PointerEvent) => {
+      if (reduce || !visible) return;
+      const r = canvas.getBoundingClientRect();
+      const x = e.clientX - r.left;
+      const y = e.clientY - r.top;
+      if (x < -60 || y < -60 || x > r.width + 60 || y > r.height + 60) return;
+      ripples.push({ x, y, t0: performance.now() });
+    };
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerdown", onDown, { passive: true });
     document.addEventListener("pointerleave", onLeave);
 
     // Run only while on screen; with assembleOnView, the first sighting starts the flight in.
@@ -242,6 +267,7 @@ export function DotText({
       cancelAnimationFrame(frame);
       clearTimeout(resizeTimer);
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerdown", onDown);
       document.removeEventListener("pointerleave", onLeave);
       scheme.removeEventListener("change", rebuild);
       io.disconnect();
