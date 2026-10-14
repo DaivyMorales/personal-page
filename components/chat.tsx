@@ -236,17 +236,6 @@ export function Chat({ t, lang, email }: { t: ChatCopy; lang: Locale; email: str
     inputRef.current?.focus();
   };
 
-  // Stop any stream when leaving the page.
-  useEffect(
-    () => () => {
-      if (stream.current) {
-        window.clearTimeout(stream.current.timer);
-        window.clearInterval(stream.current.interval);
-      }
-    },
-    [],
-  );
-
   const submit = () => {
     if (busy) return;
     ask(draft);

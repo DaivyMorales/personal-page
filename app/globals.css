@@ -587,7 +587,9 @@
   @media (max-width: 900px) { .bp { display: none; } }
 
   /* ---- Chat page, after america.gov's ---- */
-  .chat { --bubble: color-mix(in oklab, var(--ink) 6%, var(--ground)); min-height: 100vh; }
+  /* Monospace reads large; the chat runs a size smaller than the rest of the site. */
+  .chat { --bubble: color-mix(in oklab, var(--ink) 6%, var(--ground)); min-height: 100vh; font-size: 14.5px; }
+  @media (max-width: 600px) { .chat { font-size: 14px; } }
   .chat-top { position: fixed; top: 0; left: 0; z-index: 30; display: flex; gap: 1.4em; align-items: baseline; padding: 0.85em 1.7em; font-size: 0.8em; }
   .chat-main { max-width: 720px; margin: 0 auto; padding: 5em 1.25em 240px; }
   .chat-empty {
@@ -595,7 +597,7 @@
     display: grid; place-content: center; justify-items: center; text-align: center;
   }
   .chat-empty-photo { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; }
-  .chat-title { margin: 0.5em 0 0; font-family: var(--font-serif); font-weight: 400; font-size: clamp(2.6em, 7vw, 4.4em); line-height: 1; letter-spacing: -0.02em; }
+  .chat-title { margin: 0.5em 0 0; font-family: var(--font-serif); font-weight: 400; font-size: clamp(2.6em, 6vw, 4em); line-height: 1; letter-spacing: -0.02em; }
   .chat-intro { margin: 0.9em auto 0; max-width: 32em; color: var(--dim); }
   .chat-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5em; margin-top: 1.8em; }
   .chat-pill {
