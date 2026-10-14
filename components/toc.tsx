@@ -44,7 +44,7 @@ export function Toc({ items }: { items: TocItem[] }) {
                 <motion.span
                   layoutId="toc-active"
                   aria-hidden="true"
-                  className="absolute top-1/2 -left-[1.1em] h-px w-[0.7em] bg-ink"
+                  className="absolute top-1/2 -left-[1.1em] h-[2px] w-[0.7em] -translate-y-1/2 bg-terracota"
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
                 />
               )}

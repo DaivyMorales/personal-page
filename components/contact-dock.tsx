@@ -33,7 +33,7 @@ export function ContactDock() {
         <Magnetic>
           <motion.a
             href={`mailto:${site.email}`}
-            className="flex h-9 items-center rounded-[4px] bg-ink px-3.5 text-[0.8em] text-ground no-underline"
+            className="flex h-9 items-center rounded-[4px] bg-bosque px-3.5 text-[0.8em] text-crema no-underline transition-colors hover:bg-carbon"
             whileTap={{ scale: 0.94 }}
           >
             Reach out via email
