@@ -578,12 +578,10 @@
   .lang-switch a:hover, .lang-switch a[aria-current] { opacity: 1; }
   .lang-switch a[aria-current] { text-decoration: underline; text-underline-offset: 0.3em; }
 
-  /* Background: AI and maths line art in the margins, over faint engineering graph paper. */
+  /* Background: faint notebook squares, visible only in the side margins. */
   .bp {
-    --bp-ink: var(--ink);
     position: absolute; inset: 0; z-index: -1;
     overflow: hidden; pointer-events: none;
-    color: var(--bp-ink);
   }
   /* Graph paper: 12px minor and 60px major lines, visible only in the side margins. */
   .bp::before {
@@ -597,18 +595,7 @@
     -webkit-mask-image: linear-gradient(90deg, #000 0%, transparent 24%, transparent 74%, #000 100%);
     mask-image: linear-gradient(90deg, #000 0%, transparent 24%, transparent 74%, #000 100%);
   }
-  .bp-piece { position: absolute; opacity: 0.16; }
-  .bp svg { display: block; overflow: visible; fill: none; stroke: currentColor; stroke-width: 1; stroke-linecap: round; stroke-linejoin: round; }
-  .bp-node { fill: var(--ground); stroke-width: 1.2; }
-  .bp-dash { stroke-dasharray: 3 4; }
-  .bp-label { fill: currentColor; stroke: none; font-family: var(--font-mono); font-size: 9px; }
-  .bp-formula { margin: 0; font-family: var(--font-serif); font-style: italic; white-space: nowrap; }
-  /* A bright dash running along a connection: a signal moving through the network. */
-  .bp-pulse { stroke-width: 2; stroke-dasharray: 10 400; stroke-dashoffset: 410; animation: bp-pulse 4s linear infinite; }
-  @keyframes bp-pulse { to { stroke-dashoffset: 0; } }
-  @media (prefers-color-scheme: dark) { .bp-piece { opacity: 0.2; } }
   @media (max-width: 900px) { .bp { display: none; } }
-  @media (prefers-reduced-motion: reduce) { .bp-pulse { animation: none; opacity: 0; } }
 
   .table { width: 100%; border-collapse: collapse; }
   .table th, .table td { padding: 0.6em 1em 0.6em 0; border-top: 1px solid var(--rule); text-align: left; vertical-align: top; font-weight: 400; }
