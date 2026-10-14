@@ -83,6 +83,7 @@
     .hero { grid-column: 1 / -1; grid-row: 1; }
     .ticker { grid-column: 1 / -1; grid-row: 2; }
     .content { grid-column: 2; grid-row: 3; }
+    .site-footer { grid-column: 1 / -1; grid-row: 4; }
   }
 
   .toc { list-style: none; margin: 0; padding: 0; font-family: var(--font-serif); font-size: 1.15em; }
@@ -404,8 +405,6 @@
   .content .solo-end { margin-top: calc(var(--space) * 1.5); }
   .creed-item h2.creed-title { position: static; padding: 0; display: block; }
   .creed-item h2.creed-title::before, .creed-item h2.creed-title::after { content: none; }
-  .footer-link { color: inherit; text-decoration: none; }
-  .footer-link:hover { color: var(--ink); text-decoration: underline; }
 
   /* A statement that lights up, then a numbered list of principles. */
   .verse {
@@ -431,6 +430,56 @@
   .creed-title { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 1.45em; line-height: 1.1; }
   .content .creed-text { margin: 0.35em 0 0; }
   .content .creed-ref { margin: 0.4em 0 0; font-size: 0.75em; color: var(--dim); letter-spacing: 0.04em; }
+
+  /* ---- Site footer, after si.gov: always dark, with a giant dotted mark ---- */
+  .site-footer {
+    --ground: #050505;
+    --ink: #ececec;
+    --dim: rgb(236 236 236 / 0.52);
+    --rule: rgb(236 236 236 / 0.16);
+    position: relative; z-index: 1;
+    margin-top: calc(var(--space) * 2);
+    background: var(--ground); color: var(--ink);
+    border-top: 1px solid var(--rule);
+  }
+  .sf-inner { max-width: 1320px; margin: 0 auto; padding: calc(var(--space) * 2.4) var(--space) 6.5rem; }
+  .sf-grid { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: 2.5em; }
+  .sf-tagline { margin: 0; font-family: var(--font-serif); font-size: 2em; line-height: 1.05; }
+  .sf-sub { margin: 1.4em 0 0.7em; font-size: 0.8em; color: var(--dim); }
+  .sf-row { display: flex; gap: 0.9em; align-items: stretch; max-width: 30em; }
+  .sf-row input {
+    flex: 1; min-width: 0; padding: 0.4em 0;
+    border: 0; border-bottom: 1px solid var(--dim); outline: none; background: transparent;
+    color: var(--ink); font-family: var(--font-serif); font-size: 1.35em;
+    transition: border-color 0.2s ease;
+  }
+  .sf-row input::placeholder { color: var(--dim); }
+  .sf-row input:focus { border-color: var(--ink); }
+  .sf-row button {
+    padding: 0 1.1em; border: 1px solid var(--dim); background: transparent;
+    color: var(--ink); font: inherit; font-size: 0.85em; cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .sf-row button:hover { background: var(--ink); color: var(--ground); }
+  .sf-head { margin: 0.35em 0 1.1em; font-size: 0.8em; font-weight: 400; color: var(--dim); }
+  .sf-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75em; }
+  .sf-list a { color: var(--ink); text-decoration: none; font-size: 0.9em; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+  .sf-list a:hover { background-size: 100% 1px; }
+  .sf-mark { position: relative; height: clamp(150px, 24vw, 340px); margin: calc(var(--space) * 2) 0 calc(var(--space) * 1.2); }
+  .sf-dots { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--ink); touch-action: pan-y; }
+  .sf-legal {
+    display: flex; justify-content: space-between; gap: 1em; flex-wrap: wrap;
+    padding-top: 1.1em; border-top: 1px solid var(--rule);
+    font-size: 0.8em; color: var(--dim);
+  }
+  .sf-legal a { color: inherit; text-decoration: none; }
+  .sf-legal a:hover { color: var(--ink); }
+  .sf-legal-right { display: inline-flex; gap: 0.8em; align-items: baseline; }
+  .sf-legal .sdg-reveal em { color: var(--ink); }
+  @media (max-width: 900px) {
+    .sf-grid { grid-template-columns: 1fr 1fr; }
+    .sf-sign { grid-column: 1 / -1; }
+  }
 
   .table { width: 100%; border-collapse: collapse; }
   .table th, .table td { padding: 0.6em 1em 0.6em 0; border-top: 1px solid var(--rule); text-align: left; vertical-align: top; font-weight: 400; }

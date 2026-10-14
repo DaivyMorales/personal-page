@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { siClaude, siLanggraph, siN8n } from "simple-icons";
 import portrait from "@/assets/daivy.jpg";
 import { AskBar } from "@/components/ask-bar";
@@ -9,6 +8,7 @@ import { Reveal, ScrubText, Stagger, StaggerItem } from "@/components/motion/rev
 import { Stat } from "@/components/motion/stat";
 import { TypedPrompt } from "@/components/motion/typed-prompt";
 import { Section } from "@/components/section";
+import { SiteFooter } from "@/components/site-footer";
 import { techIcon } from "@/components/tech-icon";
 import { Terminal } from "@/components/terminal";
 import { BeforeAfter, WelcomeBox } from "@/components/terminal-bits";
@@ -205,21 +205,10 @@ export default function Home() {
           )}
         </Section>
 
-        <footer className="flex flex-wrap items-baseline gap-x-3 pb-32 text-dim">
-          <span>© {site.fullName}</span>
-          <span aria-hidden="true">·</span>
-          <Link href="/philosophy" className="footer-link">How I work →</Link>
-          <span aria-hidden="true">·</span>
-          {/* Bach signed his scores "S.D.G.": Soli Deo Gloria. */}
-          <span className="sdg" tabIndex={0} aria-label="S.D.G., Soli Deo Gloria. In Christ I trust.">
-            <span aria-hidden="true">S.D.G.</span>
-            <span className="sdg-reveal" aria-hidden="true">
-              Soli Deo Gloria · <em>In Christ I trust</em>
-            </span>
-          </span>
-        </footer>
         <ConsoleWink />
       </main>
+
+      <SiteFooter name={site.name} fullName={site.fullName} email={site.email} />
 
       <AskBar email={site.email} name={site.name} examples={askExamples} />
       <Terminal sections={sections} email={site.email} />
