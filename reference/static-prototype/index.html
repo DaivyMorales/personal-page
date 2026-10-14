@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#fafafa" />
+  <title>Personal Page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=Inter:wght@400..600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="page">
+    <aside class="rail">
+      <nav aria-label="Site">
+        <ul class="nav">
+          <li><a aria-current="page" href="#">Home</a></li>
+          <li><a href="#">Work</a></li>
+          <li><a href="#">Writing</a></li>
+          <li><a href="#">About</a></li>
+        </ul>
+      </nav>
+      <ol class="toc" aria-label="On this page">
+        <li style="--i:0"><a href="#intro">Introduction</a></li>
+        <li style="--i:1"><a href="#time">How long it takes</a></li>
+        <li style="--i:2"><a href="#code">In your code</a></li>
+      </ol>
+    </aside>
+
+    <main class="column">
+      <nav class="top" aria-label="Site">
+        <ul class="nav">
+          <li><a aria-current="page" href="#">Home</a></li>
+          <li><a href="#">Work</a></li>
+          <li><a href="#">Writing</a></li>
+          <li><a href="#">About</a></li>
+        </ul>
+      </nav>
+
+      <header class="masthead">
+        <div class="title-row">
+          <h1 class="title">Your Name <span>· what you do</span></h1>
+        </div>
+        <p class="statement">One line about you, with <em>one idea</em> set in serif italic.</p>
+        <ul class="masthead-line">
+          <li>/home</li>
+          <li><a href="#">12 projects</a></li>
+          <li><a href="#">by you</a></li>
+          <li>14 October 2026</li>
+        </ul>
+      </header>
+
+      <div class="lede">
+        <p>An opening paragraph. Body text is 14px with a 20.5px line height at weight 450, and an underline can be <span class="u">soft and quiet</span> like this.</p>
+      </div>
+
+      <section id="intro" class="section">
+        <div class="section-head"><h2>Introduction</h2><span class="section-index" aria-hidden="true">01</span></div>
+        <p>Each section has a heading, a hairline rule that stretches to fill the row, and an italic serif index on the right.<a class="ref" href="#" aria-label="Note 1">1</a><span class="side" role="note"><span aria-hidden="true">1</span>Side notes float into the right margin on wide screens and hide on narrow ones.</span></p>
+        <blockquote class="pull">The object is the explanation.<cite>A pull quote, with a sans citation</cite></blockquote>
+        <p>Keys look like <kbd>S</kbd> and <kbd>E</kbd>, and inline code looks like <code>npm install</code>.</p>
+      </section>
+
+      <section id="time" class="section">
+        <div class="section-head"><h2>How long it takes</h2><span class="section-index" aria-hidden="true">02</span></div>
+        <p>Detail costs time, and I would rather show the real numbers than guess. These are Claude’s active time from the first prompt to the shipped figure, review rounds included and idle gaps left out.</p>
+        <table class="table">
+          <tbody>
+            <tr><th scope="row">Watch movement</th><td class="num">1 h 54 min</td><td>One pass, checked and fixed by the same agent.</td></tr>
+            <tr><th scope="row">Seasons</th><td class="num">1 h 57 min</td><td>Built alongside the watch, 3D audit included.</td></tr>
+            <tr><th scope="row">Raptor engine</th><td class="num">10 h 33 min</td><td>First working version in 38 minutes.</td></tr>
+            <tr><th scope="row">Turbofan</th><td class="num">14 h</td><td>First build in 4 h 41 min, then five review and fix rounds.</td></tr>
+          </tbody>
+        </table>
+        <p>The pattern holds across the collection. A first version that runs comes quickly. Most of the time goes into <em>the second look</em>, at four times the size, where the faults are.</p>
+      </section>
+
+      <section id="code" class="section">
+        <div class="section-head"><h2>In your code</h2><span class="section-index" aria-hidden="true">03</span></div>
+        <div class="code" data-head>
+          <div class="code-head"><span>page.tsx</span></div>
+<pre><span class="k">import</span> { Thing } <span class="k">from</span> <span class="s">"your-package"</span>;
+
+<span class="k">export</span> <span class="k">default</span> <span class="k">function</span> Page() {
+  <span class="k">return</span> &lt;Thing /&gt;;
+}</pre>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // Highlight the TOC entry for the section in view.
+    const links = [...document.querySelectorAll('.toc a')];
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        links.forEach((a) => a.toggleAttribute('aria-current', a.hash === '#' + e.target.id));
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    document.querySelectorAll('.section').forEach((s) => io.observe(s));
+  </script>
+</body>
+</html>

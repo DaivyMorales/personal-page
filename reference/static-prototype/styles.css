@@ -1,0 +1,146 @@
+/* Tokens and rules taken from skills.wheresryan.sh/anatomy */
+:root {
+  --ground: #fafafa;
+  --ink: #171717;
+  --text-2: #525252;
+  --muted: #8f8f8f;
+  --faint: #bdbdbd;
+  --rule: #ebebeb;
+  --well: #f1f1f1;
+  --well-2: #e7e7e7;
+
+  --column: 550px;
+  --gutter: 20px;
+  --rail: 168px;
+  --margin: 168px;
+  --gap: 48px;
+
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "EB Garamond", Georgia, serif;
+  --font-mono: ui-monospace, "SF Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --ease: cubic-bezier(0.22, 0.75, 0.2, 1);
+  --card-shadow: 0 0 0 1px rgb(0 0 0 / 0.04), 0 1px 2px 0 rgb(0 0 0 / 0.04), 0 2px 8px -2px rgb(0 0 0 / 0.06);
+}
+
+html { background: var(--ground); color-scheme: light; -webkit-text-size-adjust: 100%; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20.5px;
+  font-weight: 450;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: #e3e8ef; }
+p { margin: 0 0 14px; }
+a { color: inherit; }
+
+em { font-family: var(--font-serif); font-size: 1.16em; font-style: italic; font-weight: 400; line-height: 1; }
+strong { font-weight: 550; }
+.u { text-decoration: underline 1px rgb(23 23 23 / 0.28); text-underline-offset: 3px; }
+
+code, kbd { background: var(--well); border-radius: 4px; }
+code { font-family: var(--font-mono); font-size: 12.5px; padding: 1px 5px; box-decoration-break: clone; }
+kbd {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; padding: 0 5px;
+  font: 500 11px/1 var(--font-sans); color: var(--ink);
+}
+
+/* Layout */
+.page { padding: 36px var(--gutter) 120px; }
+.column { max-width: var(--column); margin: 0 auto; }
+.rail { display: none; }
+
+.nav { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 0; padding: 0; list-style: none; }
+.nav a, .toc a { color: var(--muted); text-decoration: none; transition: color 0.3s ease; }
+.nav a:hover, .nav a[aria-current], .toc a:hover, .toc a[aria-current] { color: var(--ink); }
+.top { margin-bottom: 36px; }
+
+@media (min-width: 1120px) {
+  .page {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) var(--rail) var(--column) var(--margin) minmax(0, 1fr);
+    column-gap: var(--gap);
+    align-items: start;
+    padding-top: 56px;
+    padding-bottom: 0;
+  }
+  .column { grid-column: 3; width: 100%; max-width: none; margin: 0; padding-bottom: 120px; }
+  .top { display: none; }
+  .rail {
+    grid-column: 2; grid-row: 1;
+    position: sticky; top: 56px;
+    display: grid; align-content: start; gap: 36px;
+    font-size: 13px; line-height: 20px;
+  }
+  .rail .nav, .toc { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .toc > li { animation: rail-in 0.5s var(--ease) backwards; animation-delay: calc(var(--i, 0) * 32ms + 40ms); }
+
+  .side {
+    display: block; float: right; clear: right; position: relative;
+    width: var(--margin);
+    margin: 2px calc(-1 * (var(--margin) + var(--gap))) 0 0;
+    color: var(--muted); font-size: 12px; line-height: 18px; font-weight: 400;
+  }
+  .side > span:first-child { position: absolute; left: -14px; font-size: 10px; line-height: 15px; font-variant-numeric: tabular-nums; }
+}
+@keyframes rail-in { from { opacity: 0; transform: translateY(4px); filter: blur(2px); } }
+@media (prefers-reduced-motion: reduce) { .toc > li { animation: none; } }
+
+/* Masthead */
+.title-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.title { margin: 0; font-size: 14px; line-height: 20.5px; font-weight: 550; }
+.title span { color: var(--muted); font-weight: 450; }
+.statement { margin: 20px 0 0; text-wrap: balance; }
+.masthead-line { display: flex; flex-wrap: wrap; margin: 10px 0 0; padding: 0; list-style: none; color: var(--muted); font-size: 13px; line-height: 20px; }
+.masthead-line li + li::before { content: "·"; margin: 0 8px; color: var(--faint); }
+.masthead-line a { text-decoration: none; }
+.masthead-line a:hover { color: var(--ink); }
+.lede { margin-top: 28px; }
+
+/* Sections */
+.section { margin-top: 72px; scroll-margin-top: 48px; }
+.section-head { display: flex; align-items: center; gap: 14px; margin: 0 0 20px; }
+.section-head h2 { margin: 0; font-size: 14px; line-height: 20.5px; font-weight: 550; white-space: nowrap; }
+.section-head::after { content: ""; order: 1; flex: 1 1; height: 1px; background: var(--rule); }
+.section-index {
+  order: 2; color: var(--muted);
+  font-family: var(--font-serif); font-size: 16px; font-style: italic; line-height: 20.5px;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.ref { margin-left: 1px; color: var(--muted); font-size: 10px; line-height: 0; vertical-align: super; font-variant-numeric: tabular-nums; text-decoration: none; }
+.side { display: none; }
+
+.pull { margin: 26px 0; padding: 0; font-family: var(--font-serif); font-size: 23px; line-height: 28px; font-weight: 400; }
+.pull cite { display: block; margin-top: 8px; color: var(--muted); font-family: var(--font-sans); font-size: 12px; line-height: 17px; font-style: normal; }
+
+/* The "How long it takes" table */
+.table { width: 100%; margin: 24px 0 28px; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.table th, .table td { padding: 9px 16px 9px 0; border-top: 1px solid var(--rule); text-align: left; vertical-align: top; }
+.table tr:last-child th, .table tr:last-child td { border-bottom: 1px solid var(--rule); }
+.table th { font-weight: 500; white-space: nowrap; }
+.table td { color: var(--text-2); }
+.table td:last-child { padding-right: 0; }
+.table .num { color: var(--ink); white-space: nowrap; }
+@media (max-width: 520px) { .table td:last-child { min-width: 140px; } .table { display: block; overflow-x: auto; } }
+
+/* Code cards */
+.code {
+  position: relative; margin: 20px 0; padding: 14px 16px;
+  border-radius: 12px; background: #fff; box-shadow: var(--card-shadow);
+  font-family: var(--font-mono); font-size: 12px; line-height: 19px;
+}
+.code pre { margin: 0; font: inherit; white-space: pre; overflow-x: auto; scrollbar-width: none; }
+.code-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; color: var(--muted); font-family: var(--font-sans); font-size: 12px; line-height: 20px; }
+.code .k { color: var(--muted); }
+.code .s { color: var(--text-2); }
