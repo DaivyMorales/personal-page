@@ -9,10 +9,6 @@ export const site = {
     "Daivy's personal site: things I've built, what I'm working on, and how to reach me.",
   headline: "Building software that feels effortless.",
   bio: "I'm Daivy, a software engineer. I build fast, careful web products and enjoy turning messy problems into simple tools people like to use.",
-  // The pill in the top right. Set `available` to false to hide it.
-  availability: { available: true, label: "Available for new projects" },
-  // The clock in the top left shows your local time in this zone.
-  timeZone: "America/New_York",
   location: "Somewhere on Earth",
   email: "hello@example.com",
   social: [

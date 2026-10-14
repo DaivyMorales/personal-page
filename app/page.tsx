@@ -1,4 +1,3 @@
-import { Clock } from "@/components/clock";
 import { ContactDock } from "@/components/contact-dock";
 import { socialIcons } from "@/components/icons";
 import { Section, SideNote } from "@/components/section";
@@ -24,19 +23,6 @@ export default function Home() {
 
       <main className="column">
         <header className="flex min-h-[calc(100svh-120px)] flex-col">
-          <div className="flex items-start justify-between gap-4">
-            <Clock timeZone={site.timeZone} />
-            {site.availability.available && (
-              <p className="m-0 flex h-8 items-center gap-2 rounded-full bg-card px-3.5 text-[13px] shadow-[var(--card-shadow)]">
-                <span className="relative flex size-2">
-                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-green-500 opacity-60 motion-reduce:hidden" />
-                  <span className="relative inline-flex size-2 rounded-full bg-green-600" />
-                </span>
-                {site.availability.label}
-              </p>
-            )}
-          </div>
-
           <div className="my-auto py-16">
             <p className="m-0 inline-flex h-8 items-center rounded-full bg-card px-3.5 text-[14px] shadow-[var(--card-shadow)]">
               <span className="text-muted">Hi,&nbsp;</span>I&apos;m {site.name}
