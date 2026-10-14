@@ -39,24 +39,20 @@ export function Toc({ items }: { items: TocItem[] }) {
       <nav aria-label="Contents" className="toc-panel">
         <ul className="toc">
           {items.map(({ id, label }) => (
-            <li key={id} className="relative">
-              {active === id && (
-                <motion.span
-                  layoutId="toc-active"
-                  aria-hidden="true"
-                  className="absolute top-1/2 -left-[1.1em] h-px w-[0.7em] bg-ink"
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                />
-              )}
-              <motion.a
-                href={`#${id}`}
-                aria-current={active === id ? "location" : undefined}
-                className="inline-block"
-                animate={{ x: active === id ? 6 : 0 }}
-                transition={{ type: "spring", stiffness: 380, damping: 30 }}
-              >
+            <li key={id}>
+              {/* si.gov-style markers: a hollow ring per section, filled for the one in view. */}
+              <a href={`#${id}`} aria-current={active === id ? "location" : undefined} className="toc-link">
+                <span className="toc-dot" aria-hidden="true">
+                  {active === id && (
+                    <motion.span
+                      layoutId="toc-active"
+                      className="toc-dot-fill"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                </span>
                 {label}
-              </motion.a>
+              </a>
             </li>
           ))}
         </ul>

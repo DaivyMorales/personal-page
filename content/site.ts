@@ -42,6 +42,18 @@ export const site = {
   social: [] as { label: string; href: string }[],
 };
 
+// The sideways-scrolling strip under the hero.
+export const ticker = [
+  "Agentic systems",
+  "JOYC Brands",
+  "Workflow automation",
+  "OFI Services",
+  "LangGraph",
+  "Claude Code",
+  "n8n",
+  "Nexsys · IBM",
+];
+
 export type Project = {
   name: string;
   kind: string;

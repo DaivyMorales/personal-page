@@ -1,10 +1,12 @@
 import { ContactDock } from "@/components/contact-dock";
 import { Hero } from "@/components/motion/hero";
 import { Reveal, ScrubText, Stagger, StaggerItem } from "@/components/motion/reveal";
+import { Stat } from "@/components/motion/stat";
 import { Section } from "@/components/section";
 import { techIcon } from "@/components/tech-icon";
+import { Ticker } from "@/components/ticker";
 import { Toc, type TocItem } from "@/components/toc";
-import { education, experience, projects, site, toolkit } from "@/content/site";
+import { education, experience, projects, site, ticker, toolkit } from "@/content/site";
 
 const sections: TocItem[] = [
   { id: "about", label: "About" },
@@ -24,6 +26,8 @@ export default function Home() {
         </p>
       </Hero>
 
+      <Ticker items={ticker} />
+
       <Toc items={sections} />
 
       <main className="content">
@@ -42,10 +46,13 @@ export default function Home() {
           <Reveal>
             <p>
               Right now I&apos;m the sole AI engineer at <strong>JOYC Brands</strong>, where I built the
-              company&apos;s sourcing operating system <em>from idea to beta</em>. It gives the sourcing team
-              back 30–40 hours a month, at an estimated 97–99% lower cost than a comparable U.S. team.
+              company&apos;s sourcing operating system <em>from idea to beta</em>.
             </p>
           </Reveal>
+          <Stat from={97} to={99} suffix="%">
+            estimated lower cost than a comparable U.S. delivery model, for enterprise-level sourcing
+            software at JOYC Brands. It gives the team back 30–40 hours a month.
+          </Stat>
         </Section>
 
         <Section id="experience" title="Experience">

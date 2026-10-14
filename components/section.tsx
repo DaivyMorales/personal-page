@@ -1,7 +1,6 @@
 import { WipeIn } from "@/components/motion/reveal";
-import { site } from "@/content/site";
 
-/** A section whose heading sticks to the top while you read it, prefixed "Daivy:". */
+/** A section whose heading sticks to the top while you read it, marked with a dot. */
 export function Section({
   id,
   title,
@@ -13,7 +12,7 @@ export function Section({
 }) {
   return (
     <section id={id} aria-labelledby={`${id}-title`}>
-      <h2 id={`${id}-title`} data-prefix={site.name}>
+      <h2 id={`${id}-title`}>
         <WipeIn>{title}</WipeIn>
       </h2>
       {children}
