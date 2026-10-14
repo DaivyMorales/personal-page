@@ -1,6 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 export type TerminalSection = { id: string; label: string; hint: string };
@@ -37,6 +38,7 @@ function useActiveSection(ids: string[]) {
  */
 export function Terminal({ sections, email }: { sections: TerminalSection[]; email: string }) {
   const reduce = useReducedMotion();
+  const router = useRouter();
   const ids = useMemo(() => sections.map((s) => s.id), [sections]);
   const active = useActiveSection(ids);
 
@@ -83,6 +85,7 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
   const commands: Command[] = useMemo(
     () => [
       ...sections.map((s) => ({ name: s.id, hint: s.hint, run: () => go(s.id) })),
+      { name: "philosophy", hint: "How I work", run: () => router.push("/philosophy") },
       { name: "email", hint: "Write to me", run: () => (window.location.href = `mailto:${email}`) },
       { name: "top", hint: "Back to the top", run: () => window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }) },
       {
@@ -97,7 +100,7 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
       // Not listed; for anyone who found the footer.
       { name: "sdg", hint: "Soli Deo Gloria", hidden: true, run: () => setEcho({ text: "Soli Deo Gloria. In Christ I trust. ✝" }) },
     ],
-    [sections, email, go, reduce],
+    [sections, email, go, reduce, router],
   );
 
   const q = query.replace(/^\//, "").trim().toLowerCase();
