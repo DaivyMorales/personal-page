@@ -1,5 +1,6 @@
-import Image from "next/image";
-import portrait from "@/assets/daivy.jpg";
+import { Clock } from "@/components/clock";
+import { ContactDock } from "@/components/contact-dock";
+import { socialIcons } from "@/components/icons";
 import { Section, SideNote } from "@/components/section";
 import { SiteNav } from "@/components/site-nav";
 import { Toc, type TocItem } from "@/components/toc";
@@ -22,37 +23,56 @@ export default function Home() {
       </aside>
 
       <main className="column">
-        <SiteNav current="/" className="top-nav mb-9" />
-
-        <header>
-          <Image
-            src={portrait}
-            alt={`Portrait of ${site.name}`}
-            width={72}
-            height={72}
-            sizes="72px"
-            placeholder="blur"
-            preload
-            className="mb-5 size-[72px] rounded-full object-cover shadow-[var(--card-shadow)]"
-          />
-          <div className="flex items-center justify-between gap-4">
-            <h1 className="m-0 text-sm/[20.5px] font-[550]">
-              {site.name} <span className="font-[450] text-muted">· {site.tagline}</span>
-            </h1>
+        <header className="flex min-h-[calc(100svh-120px)] flex-col">
+          <div className="flex items-start justify-between gap-4">
+            <Clock timeZone={site.timeZone} />
+            {site.availability.available && (
+              <p className="m-0 flex h-8 items-center gap-2 rounded-full bg-card px-3.5 text-[13px] shadow-[var(--card-shadow)]">
+                <span className="relative flex size-2">
+                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-green-500 opacity-60 motion-reduce:hidden" />
+                  <span className="relative inline-flex size-2 rounded-full bg-green-600" />
+                </span>
+                {site.availability.label}
+              </p>
+            )}
           </div>
-          <p className="mt-5 mb-0">
-            {site.statement.before} <em>{site.statement.em}</em>
-            {site.statement.after}
-          </p>
-          <ul className="mt-2.5 flex list-none flex-wrap p-0 text-[13px]/5 text-muted [&>li+li]:before:mx-2 [&>li+li]:before:text-faint [&>li+li]:before:content-['·']">
-            <li>{site.location}</li>
-            <li>
-              <a href="#projects" className="nav-link">{projects.length} projects</a>
-            </li>
-            <li>
-              <a href="#contact" className="nav-link">Get in touch ↓</a>
-            </li>
-          </ul>
+
+          <div className="my-auto py-16">
+            <p className="m-0 inline-flex h-8 items-center rounded-full bg-card px-3.5 text-[14px] shadow-[var(--card-shadow)]">
+              <span className="text-muted">Hi,&nbsp;</span>I&apos;m {site.name}
+              <span className="ml-1.5" aria-hidden="true">👋</span>
+            </p>
+            <h1 className="mt-5 mb-0 max-w-[18ch] font-serif text-[44px]/[1.05] font-normal tracking-[-0.01em] text-balance sm:text-[56px]">
+              {site.headline}
+            </h1>
+
+            <div className="mt-12 grid gap-8 sm:grid-cols-[1fr_220px]">
+              <ul className="m-0 flex list-none gap-2 p-0">
+                {site.social.map(({ label, href }) => {
+                  const Icon = socialIcons[label];
+                  return (
+                    <li key={label}>
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${site.name} on ${label}`}
+                        className="grid size-10 place-items-center rounded-full bg-card text-ink shadow-[var(--card-shadow)] transition-transform duration-300 hover:-translate-y-0.5"
+                      >
+                        <Icon />
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+              <div>
+                <p className="m-0 text-[13.5px]/[21px] text-text-2">{site.bio}</p>
+                <a href="#about" className="mt-5 inline-flex items-center gap-1.5 text-[13.5px] text-ink no-underline">
+                  Discover <span aria-hidden="true">↓</span>
+                </a>
+              </div>
+            </div>
+          </div>
         </header>
 
         <Section id="about" index={1} title="About">
@@ -147,6 +167,7 @@ export default function Home() {
           © {site.name}
         </footer>
       </main>
+      <ContactDock />
     </div>
   );
 }

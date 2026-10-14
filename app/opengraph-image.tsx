@@ -32,7 +32,7 @@ export default function OpengraphImage() {
           <span style={{ color: "#8f8f8f" }}>· {site.tagline}</span>
         </div>
         <div style={{ display: "flex", fontSize: 64, lineHeight: 1.15, maxWidth: 900 }}>
-          {`${site.statement.before} ${site.statement.em}${site.statement.after}`}
+          {site.headline}
         </div>
         <div style={{ display: "flex", height: 1, background: "#ebebeb" }} />
       </div>

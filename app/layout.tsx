@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { EB_Garamond, Inter } from "next/font/google";
+import { Instrument_Serif, Inter } from "next/font/google";
 import { site } from "@/content/site";
 import "./globals.css";
 
@@ -11,9 +11,10 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
-const garamond = EB_Garamond({
-  variable: "--font-garamond",
+const serif = Instrument_Serif({
+  variable: "--font-serif-face",
   subsets: ["latin"],
+  weight: "400",
   style: ["normal", "italic"],
 });
 
@@ -46,7 +47,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} ${garamond.variable}`}>
+    <html lang="en" className={`${inter.variable} ${serif.variable}`}>
       <body>{children}</body>
     </html>
   );
