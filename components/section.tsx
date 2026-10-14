@@ -14,6 +14,8 @@ export function Section({
     <section id={id} aria-labelledby={`${id}-title`}>
       <h2 id={`${id}-title`}>
         <WipeIn>{title}</WipeIn>
+        {/* A working-directory path, for a bit of terminal air. */}
+        <span className="h2-path" aria-hidden="true">~/{id}</span>
       </h2>
       {children}
     </section>

@@ -3,28 +3,32 @@ import { ContactDock } from "@/components/contact-dock";
 import { Hero } from "@/components/motion/hero";
 import { Reveal, ScrubText, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { Stat } from "@/components/motion/stat";
+import { TypedPrompt } from "@/components/motion/typed-prompt";
 import { Section } from "@/components/section";
 import { techIcon } from "@/components/tech-icon";
+import { Terminal } from "@/components/terminal";
 import { Ticker } from "@/components/ticker";
 import { Toc, type TocItem } from "@/components/toc";
 import { education, experience, projects, site, ticker, toolkit } from "@/content/site";
 
-const sections: TocItem[] = [
-  { id: "about", label: "About" },
-  { id: "experience", label: "Experience" },
-  { id: "projects", label: "Projects" },
-  { id: "education", label: "Education" },
-  { id: "toolkit", label: "Toolkit" },
-  { id: "contact", label: "Contact" },
-];
+const sections = [
+  { id: "about", label: "About", hint: "Who I am" },
+  { id: "experience", label: "Experience", hint: "Where I've worked" },
+  { id: "projects", label: "Projects", hint: "Things I've built" },
+  { id: "education", label: "Education", hint: "Where I studied" },
+  { id: "toolkit", label: "Toolkit", hint: "What I work with" },
+  { id: "contact", label: "Contact", hint: "How to reach me" },
+] satisfies (TocItem & { hint: string })[];
 
 export default function Home() {
   return (
     <div className="layout">
       <Hero name={site.name}>
-        <p className="m-0">
-          {site.bio} <a href="#about">Read on</a>.
-        </p>
+        <TypedPrompt prompt="daivy@mosquera ~ %" command="whoami">
+          <p className="m-0">
+            {site.bio} <a href="#about">Read on</a>.
+          </p>
+        </TypedPrompt>
       </Hero>
 
       <Ticker items={ticker} crossAfter={3} />
@@ -167,6 +171,7 @@ export default function Home() {
       </main>
 
       <ContactDock />
+      <Terminal sections={sections} email={site.email} />
     </div>
   );
 }

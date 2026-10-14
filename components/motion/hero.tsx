@@ -30,7 +30,7 @@ export function Hero({ name, children }: { name: string; children: React.ReactNo
         className="hero-lede"
         initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
         animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        transition={{ duration: 1, ease, delay: 1.1 }}
+        transition={{ duration: 1, ease, delay: 0.7 }}
       >
         {children}
       </motion.div>

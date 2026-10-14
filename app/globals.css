@@ -278,6 +278,66 @@
   .sdg-reveal em { font-family: var(--font-serif); font-size: 1.2em; font-style: italic; color: var(--ink); }
   .sdg:hover .sdg-reveal, .sdg:focus-visible .sdg-reveal { max-width: 32em; opacity: 1; filter: blur(0); }
 
+  /* ---- Terminal air ---- */
+
+  /* Hero: a typed shell prompt whose output is the bio. */
+  .typed { display: grid; gap: 0.9em; justify-items: center; }
+  .typed-line { margin: 0; font-size: 0.9em; }
+  .typed-prompt { color: var(--dim); }
+  .cursor {
+    display: inline-block; width: 0.6em; height: 1.15em; margin-left: 0.15em;
+    vertical-align: -0.2em; background: var(--ink);
+  }
+  .cursor-blink { animation: blink 1.1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* Section headings: a working-directory path on the right. */
+  .content h2 { display: flex; align-items: center; }
+  .h2-path { margin-left: auto; font-family: var(--font-mono); font-size: 0.5em; color: var(--dim); }
+  @media (max-width: 900px) { .h2-path { display: none; } }
+
+  /* Status line, bottom-left, like a terminal's. */
+  .statusline {
+    position: fixed; left: 1.25em; bottom: 1.1em; z-index: 20;
+    display: none; align-items: center; gap: 0.55em;
+    padding: 0.3em 0.6em; border: 0; border-radius: 6px;
+    background: color-mix(in oklab, var(--ground) 82%, transparent);
+    backdrop-filter: blur(6px);
+    font-family: var(--font-mono); font-size: 12px; color: var(--dim);
+    cursor: pointer; transition: color 0.2s ease;
+  }
+  .statusline:hover { color: var(--ink); }
+  .statusline-glyph { display: inline-block; width: 1ch; text-align: center; color: var(--ink); }
+  .statusline-hint kbd { padding: 0 0.35em; border: 1px solid var(--rule); border-radius: 3px; font: inherit; }
+  @media (min-width: 901px) and (hover: hover) { .statusline { display: inline-flex; } }
+
+  /* Slash-command menu, styled as a small terminal window. */
+  .term-backdrop { position: fixed; inset: 0; z-index: 40; background: rgb(0 0 0 / 0.18); backdrop-filter: blur(2px); }
+  .term {
+    position: fixed; left: 50%; bottom: 12vh; z-index: 41;
+    width: min(560px, calc(100vw - 2rem)); translate: -50% 0;
+    border: 1px solid var(--rule); border-radius: 10px;
+    background: var(--ground); color: var(--ink);
+    box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.45);
+    font-family: var(--font-mono); font-size: 14px;
+    overflow: hidden;
+  }
+  .term-bar { display: flex; align-items: center; gap: 6px; padding: 10px 12px; border-bottom: 1px solid var(--rule); }
+  .term-bar > span { width: 10px; height: 10px; border-radius: 50%; border: 1px solid var(--rule); }
+  .term-bar em { margin-left: auto; margin-right: auto; padding-right: 40px; font-style: normal; font-size: 12px; color: var(--dim); }
+  .term-input { display: flex; align-items: center; gap: 0.6em; padding: 12px 14px; border-bottom: 1px solid var(--rule); }
+  .term-input input { flex: 1; min-width: 0; border: 0; outline: none; background: transparent; color: inherit; font: inherit; caret-color: var(--ink); }
+  .term-input input::placeholder { color: var(--dim); }
+  .term-list { list-style: none; margin: 0; padding: 6px; max-height: 50vh; overflow: auto; }
+  .term-list li { display: flex; gap: 1.2em; padding: 7px 10px; border-radius: 6px; cursor: pointer; }
+  .term-list li[aria-selected="true"] { background: var(--ink); color: var(--ground); }
+  .term-list li[aria-selected="true"] .term-hint { color: inherit; opacity: 0.7; }
+  .term-name { min-width: 9ch; }
+  .term-hint { color: var(--dim); }
+  .term-empty { color: var(--dim); cursor: default; }
+  .term-echo { margin: 0; padding: 18px 16px; font-family: var(--font-serif); font-size: 1.5em; font-style: italic; }
+  .term-foot { margin: 0; padding: 8px 14px; border-top: 1px solid var(--rule); font-size: 11px; color: var(--dim); }
+
   .table { width: 100%; border-collapse: collapse; }
   .table th, .table td { padding: 0.6em 1em 0.6em 0; border-top: 1px solid var(--rule); text-align: left; vertical-align: top; font-weight: 400; }
   .table tr:last-child th, .table tr:last-child td { border-bottom: 1px solid var(--rule); }
@@ -293,9 +353,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ticker-track, .badge-ring { animation: none; }
+  .ticker-track, .badge-ring, .cursor-blink { animation: none; }
 }
 
 @media print {
-  .toc-panel, .menu-button, .contact-dock { display: none !important; }
+  .toc-panel, .menu-button, .contact-dock, .statusline { display: none !important; }
 }
