@@ -2,17 +2,20 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import portrait from "@/assets/daivy.jpg";
+import type { Locale } from "@/content/i18n/config";
 import type { Dictionary } from "@/content/i18n/en";
 
 /**
  * A pill-shaped "Ask me anything…" box that floats at the bottom of the screen, like
- * america.gov's. Typing a message and pressing Enter opens an email to Daivy with it filled in.
+ * america.gov's. Typing a question and pressing Enter opens the chat page with it already asked.
  * While empty, it cycles through example questions.
  */
-export function AskBar({ email, t }: { email: string; t: Dictionary["ask"] }) {
+export function AskBar({ lang, t }: { lang: Locale; t: Dictionary["ask"] }) {
   const examples = t.examples;
+  const router = useRouter();
   const reduce = useReducedMotion();
   const [message, setMessage] = useState("");
   const [focused, setFocused] = useState(false);
@@ -24,9 +27,10 @@ export function AskBar({ email, t }: { email: string; t: Dictionary["ask"] }) {
     return () => clearInterval(id);
   }, [reduce, message, focused, examples.length]);
 
+  // Open the chat page with the question (or the example on show) already asked.
   const send = () => {
-    const body = message.trim() || examples[index];
-    window.location.href = `mailto:${email}?subject=${encodeURIComponent(t.subject)}&body=${encodeURIComponent(body)}`;
+    const q = message.trim() || examples[index];
+    router.push(`/${lang}/chat?q=${encodeURIComponent(q)}`);
   };
 
   return (

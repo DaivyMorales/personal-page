@@ -73,7 +73,7 @@ export default async function PhilosophyPage({ params }: PageProps<"/[lang]/phil
           </Reveal>
         </main>
 
-        <AskBar email={site.email} t={t.ask} />
+        <AskBar lang={lang} t={t.ask} />
       </div>
       <SiteFooter fullName={site.fullName} email={site.email} lang={lang} t={t.footer} sections={t.sections} sdg={t.sdg} />
     </>

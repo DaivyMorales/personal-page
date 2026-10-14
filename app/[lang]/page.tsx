@@ -211,7 +211,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 
       <SiteFooter fullName={site.fullName} email={site.email} lang={lang} t={t.footer} sections={t.sections} sdg={t.sdg} />
 
-      <AskBar email={site.email} t={t.ask} />
+      <AskBar lang={lang} t={t.ask} />
       <Terminal sections={sections} email={site.email} lang={lang} t={t.terminal} sdg={sdgAnswer} />
     </div>
   );

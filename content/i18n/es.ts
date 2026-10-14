@@ -223,8 +223,114 @@ export const es: Dictionary = {
     try: "Prueba",
     askAnything: "Pregúntale a Daivy lo que quieras…",
     messageLabel: "Mensaje para Daivy",
-    send: "Enviar por correo",
-    subject: "Hola desde tu sitio",
+    send: "Preguntar",
+  },
+  chat: {
+    title: "Pregúntame lo que quieras",
+    pageTitle: "Chat",
+    intro: "Un pequeño asistente que conoce mi trabajo. Pregunta por mi experiencia, proyectos, habilidades o cómo trabajo.",
+    placeholder: "Pregunta lo que quieras…",
+    thinking: "Pensando",
+    sources: "Fuentes",
+    followups: "Relacionado",
+    copy: "Copiar",
+    copied: "Copiado",
+    newChat: "Nuevo chat",
+    back: "Daivy",
+    send: "Enviar",
+    you: "Tú",
+    assistant: "Asistente de Daivy",
+    disclaimer: "Asistente de demostración con respuestas de ejemplo sobre mi trabajo.",
+    disclaimerLink: "Escríbeme para una conversación real",
+    suggestions: [
+      "¿A qué te dedicas?",
+      "¿Qué construiste en JOYC Brands?",
+      "Cuéntame de tus proyectos",
+      "¿Estás disponible para un nuevo proyecto?",
+    ],
+    knowledge: [
+      {
+        keywords: ["hola", "buenas", "quien", "eres", "dedicas", "presentate", "daivy", "que haces"],
+        answer:
+          "¡Hola! Soy el asistente de Daivy. **Daivy Morales** es Ingeniero de IA de Producto en Mosquera, Colombia.\n\nConstruye sistemas agénticos listos para producción y automatización de flujos de trabajo, y lleva productos de IA desde la primera idea hasta una beta que la gente de verdad usa.",
+        sources: [{ label: "Sobre mí", href: "#about" }],
+        followups: ["¿Qué construiste en JOYC Brands?", "¿Qué herramientas usas?"],
+      },
+      {
+        keywords: ["joyc", "brands", "abastecimiento", "actual", "ahora", "empleo", "rol"],
+        answer:
+          "En **JOYC Brands** (Brooklyn, remoto) Daivy es el único ingeniero de IA. Construyó el sistema operativo de abastecimiento de la empresa de la idea a la beta:\n\n- Proveedores, especificaciones, cotizaciones, conversaciones y decisiones en un solo flujo\n- IA que lee los mensajes de proveedores, extrae los datos y redacta respuestas rutinarias\n- Entre 30 y 40 horas al mes devueltas al equipo\n\nEl estimado es un costo **entre 97 y 99 % menor** que un modelo equivalente en EE. UU.",
+        sources: [
+          { label: "Experiencia · JOYC Brands", href: "#experience" },
+          { label: "Sobre mí", href: "#about" },
+        ],
+        followups: ["¿Qué hiciste en OFI Services?", "Cuéntame de tus proyectos"],
+      },
+      {
+        keywords: ["ofi", "lider", "equipo", "mark", "consuelo", "consultor", "paises", "india"],
+        answer:
+          "En **OFI Services** (Ámsterdam, remoto) Daivy lideró un equipo de tres consultores de IA.\n\n- Construyó la plataforma de marketing **Mark** de principio a fin con agentes autónomos en Python, LangGraph y LangChain\n- Coordinó con equipos de ingeniería en Países Bajos e India\n- Rediseñó **Mark** y **Consuelo**, de prototipos a productos profesionales, lo que aumentó su adopción",
+        sources: [{ label: "Experiencia · OFI Services", href: "#experience" }],
+        followups: ["¿Qué herramientas usas?", "¿Cómo trabajas?"],
+      },
+      {
+        keywords: ["proyecto", "proyectos", "construiste", "construir", "venedict", "baruch", "whatsapp"],
+        answer:
+          "Algunas cosas que Daivy diseñó y construyó de principio a fin:\n\n- **Venedict**: una plataforma de análisis de inversiones donde dos agentes debaten la tesis alcista y la bajista, para que la decisión no dependa de un solo sesgo\n- **Baruch Delivery Assistant**: un asistente de WhatsApp en n8n que toma pedidos y gestiona domicilios; cerró 8 ventas en su primer lanzamiento\n- **Mark** y **Consuelo**: plataformas de marketing y recursos humanos hechas en OFI Services",
+        sources: [{ label: "Proyectos", href: "#projects" }],
+        followups: ["¿Puedes construir un asistente de IA para mi negocio?", "¿Qué herramientas usas?"],
+      },
+      {
+        keywords: ["herramientas", "stack", "habilidades", "tecnologias", "python", "langgraph", "next", "react", "usas"],
+        answer:
+          "Las herramientas de Daivy en el día a día:\n\n- **IA**: Claude, Claude Code, Codex, MCP, RAG, desarrollo guiado por especificaciones\n- **Ingeniería**: Python, Django, FastAPI, LangGraph, LangChain, TypeScript, React, Next.js\n- **Automatización**: n8n, Make\n- **Datos y nube**: PostgreSQL, Supabase, Firebase, AWS, Vercel",
+        sources: [{ label: "Herramientas", href: "#toolkit" }],
+        followups: ["Cuéntame de tus proyectos", "¿Dónde estudiaste?"],
+      },
+      {
+        keywords: ["estudio", "estudiaste", "educacion", "carrera", "universidad", "ingles", "sena", "titulo"],
+        answer:
+          "Daivy está terminando **Ingeniería de Software** en el Politécnico Grancolombiano (hasta marzo de 2027), después de un tecnólogo en software en el SENA. También tiene un nivel de **inglés B2+**.",
+        sources: [{ label: "Educación", href: "#education" }],
+        followups: ["¿A qué te dedicas?", "¿Estás disponible para un nuevo proyecto?"],
+      },
+      {
+        keywords: ["disponible", "disponibilidad", "contratar", "contacto", "correo", "freelance", "juntos", "precio", "costo", "tarifas", "nuevo proyecto"],
+        answer:
+          "A Daivy siempre le alegra hablar de productos de IA, sistemas agénticos y automatización.\n\nEl mejor siguiente paso es un correo corto contando qué quieres construir: **daivymorales7705@gmail.com**.",
+        sources: [{ label: "Contacto", href: "#contact" }],
+        followups: ["¿Cómo trabajas?", "Cuéntame de tus proyectos"],
+      },
+      {
+        keywords: ["asistente", "negocio", "automatizar", "automatizacion", "chatbot", "agente", "agentes", "empresa"],
+        answer:
+          "Sí, justo ese es el tipo de trabajo que hace Daivy. Un camino típico:\n\n- Entender el proceso desordenado y dónde se pierde tiempo\n- Construir un agente o flujo que lea, ordene y redacte lo rutinario\n- Dejar a las personas a cargo de las decisiones importantes\n- Lanzar una beta rápido y medir las horas que devuelve\n\nEn JOYC Brands ese enfoque le ahorró al equipo entre 30 y 40 horas al mes.",
+        sources: [
+          { label: "Experiencia", href: "#experience" },
+          { label: "Proyectos", href: "#projects" },
+        ],
+        followups: ["¿Estás disponible para un nuevo proyecto?", "¿Qué herramientas usas?"],
+      },
+      {
+        keywords: ["trabajas", "filosofia", "valores", "principios", "enfoque", "honestidad", "confianza", "como trabajas"],
+        answer:
+          "La versión corta de Daivy: **constrúyelo con cuidado, para las personas que de verdad lo van a usar.**\n\n- Honestidad, siempre\n- Su palabra es su contrato\n- Integridad cuando nadie está mirando\n- Responsabilidad de principio a fin",
+        sources: [{ label: "Cómo trabajo", href: "/philosophy" }],
+        followups: ["¿Estás disponible para un nuevo proyecto?", "¿A qué te dedicas?"],
+      },
+      {
+        keywords: ["donde", "ubicacion", "vives", "colombia", "remoto", "horario"],
+        answer: "Daivy vive en **Mosquera, Colombia**, y trabaja de forma remota con equipos en EE. UU. y Europa.",
+        sources: [{ label: "Sobre mí", href: "#about" }],
+        followups: ["¿Estás disponible para un nuevo proyecto?"],
+      },
+    ],
+    fallback: {
+      answer:
+        "Buena pregunta. Soy una demo con respuestas de ejemplo, así que todavía no tengo esa.\n\nPrueba preguntando por la experiencia, los proyectos, las habilidades o la educación de Daivy, o escríbele directamente a **daivymorales7705@gmail.com**.",
+      sources: [{ label: "Contacto", href: "#contact" }],
+      followups: ["¿A qué te dedicas?", "Cuéntame de tus proyectos"],
+    },
   },
   footer: {
     tagline: ["Productos de IA,", "hechos con cuidado."],

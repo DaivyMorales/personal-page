@@ -72,12 +72,13 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
     locales.flatMap((l) => [
       [`/${l}`, site.name],
       [`/${l}/philosophy`, getDictionary(l).philosophy.title],
+      [`/${l}/chat`, getDictionary(l).chat.pageTitle],
     ]),
   );
   const langNames = Object.fromEntries(locales.map((l) => [l, getDictionary(l).langName]));
 
   return (
-    <html lang={lang} className={`${plexMono.variable} ${serif.variable}`}>
+    <html lang={lang} className={`${plexMono.variable} ${serif.variable}`} data-scroll-behavior="smooth">
       <body>
         <MotionProvider>
           <ScrollProgress />
