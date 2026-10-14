@@ -232,39 +232,6 @@
   }
   .content .stat-caption { margin: 0.6em 0 0; max-width: 30em; font-family: var(--font-serif); font-size: 1.35em; line-height: 1.2; }
 
-  /* Round contact badge with turning text. */
-  .badge {
-    position: relative; display: grid; place-items: center;
-    width: 112px; height: 112px;
-    border-radius: 50%;
-    background: var(--ink); color: var(--ground);
-    text-decoration: none;
-    box-shadow: 0 10px 30px -10px rgb(0 0 0 / 0.45);
-  }
-  .badge:hover { color: var(--ground); }
-  .badge-ring {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    font-family: var(--font-mono); font-size: 7.4px; letter-spacing: 0.06em;
-    fill: currentColor;
-    animation: badge-spin 18s linear infinite;
-  }
-  .badge:hover .badge-ring { animation-duration: 6s; }
-  .badge-photo { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; filter: grayscale(1); transition: filter 0.4s ease; }
-  .badge:hover .badge-photo { filter: grayscale(0); }
-  .badge-hover {
-    position: absolute; inset: 28px; display: grid; place-items: center;
-    border-radius: 50%;
-    background: rgb(0 0 0 / 0.55); color: #fff;
-    font-family: var(--font-serif); font-size: 1.05em;
-    opacity: 0; transition: opacity 0.3s ease;
-  }
-  .badge:hover .badge-hover, .badge:focus-visible .badge-hover { opacity: 1; }
-  @keyframes badge-spin { to { transform: rotate(360deg); } }
-  @media (max-width: 600px) {
-    .badge { width: 92px; height: 92px; }
-    .badge-photo { width: 46px; height: 46px; }
-    .badge-hover { inset: 23px; }
-  }
 
   .ticker-cross { width: 0.5em; height: 0.72em; padding-inline: 0; margin-inline: 0.75em; transform: translateY(-0.04em); }
 
@@ -352,7 +319,7 @@
   .welcome-title { margin-bottom: 0.6em !important; }
   .welcome-star { display: inline-block; margin-right: 0.35em; }
   .welcome-dim { color: var(--dim); }
-  .welcome kbd, .cprompt kbd { padding: 0 0.3em; border: 1px solid var(--rule); border-radius: 3px; font: inherit; }
+  .welcome kbd { padding: 0 0.3em; border: 1px solid var(--rule); border-radius: 3px; font: inherit; }
 
   /* Before / After box. */
   .ba { margin: var(--space) 0; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; font-size: 0.85em; }
@@ -378,24 +345,76 @@
     background: none; border-radius: 0; font-size: 0.8em;
   }
 
-  /* Claude Code-style message box. */
-  .cprompt { margin: var(--space) 0; }
-  .cprompt-box {
-    display: flex; gap: 0.7em; align-items: flex-start;
-    padding: 0.75em 0.9em;
-    border: 1px solid var(--rule); border-radius: 8px;
-    transition: border-color 0.2s ease;
+  /* ---- america.gov touches ---- */
+
+  /* Small pictures sitting inside a sentence. */
+  .scrub-inline { display: inline-block; margin: 0 0.18em 0 0; vertical-align: -0.12em; }
+  .inline-pic {
+    display: inline-grid; place-items: center;
+    width: 1.05em; height: 1.05em; border-radius: 50%;
+    background: color-mix(in oklab, var(--ink) 5%, var(--ground));
+    border: 1px solid var(--rule);
+    box-shadow: 0 0 0 2px var(--ground), 0 6px 16px -6px rgb(0 0 0 / 0.35);
   }
-  .cprompt-box:focus-within { border-color: var(--ink); }
-  .cprompt-caret { line-height: 1.4; }
-  .cprompt textarea {
-    flex: 1; min-width: 0; resize: none; field-sizing: content; min-height: 1.4em; max-height: 12em;
-    border: 0; outline: none; background: transparent; color: inherit; font: inherit; line-height: 1.4;
+  .inline-photo { object-fit: cover; }
+  .inline-logo svg { width: 58%; height: 58%; }
+  .inline-stack { display: inline-flex; }
+  .inline-stack .inline-pic + .inline-pic { margin-left: -0.28em; }
+
+  /* Floating "Ask me anything" bar. */
+  .askbar {
+    position: fixed; left: 50%; bottom: 18px; z-index: 30;
+    translate: -50% 0;
+    display: flex; align-items: center; gap: 10px;
+    width: min(560px, calc(100vw - 24px));
+    padding: 7px 7px 7px 7px;
+    border: 1px solid var(--rule); border-radius: 999px;
+    background: color-mix(in oklab, var(--ground) 88%, transparent);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 18px 40px -18px rgb(0 0 0 / 0.35), 0 2px 6px -2px rgb(0 0 0 / 0.08);
   }
-  .cprompt textarea::placeholder { color: var(--dim); }
-  .content .cprompt-foot { display: flex; justify-content: space-between; gap: 1em; margin: 0.5em 0.2em 0; font-size: 0.75em; color: var(--dim); }
-  .cprompt-foot button { border: 0; background: none; color: var(--ink); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 0.3em; }
-  .cprompt-foot button:disabled { color: var(--dim); text-decoration: none; cursor: default; }
+  .askbar-photo { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex: none; }
+  .askbar-field { position: relative; flex: 1; min-width: 0; height: 40px; display: flex; align-items: center; }
+  .askbar-field input {
+    width: 100%; border: 0; outline: none; background: transparent;
+    color: var(--ink); font: inherit; font-size: 0.9em;
+  }
+  .askbar-placeholder {
+    position: absolute; inset: 0; display: flex; align-items: center; overflow: hidden;
+    pointer-events: none; color: var(--dim); font-size: 0.9em; white-space: nowrap;
+  }
+  .askbar-placeholder > span { display: block; overflow: hidden; text-overflow: ellipsis; }
+  .askbar-send {
+    display: grid; place-items: center; flex: none;
+    width: 40px; height: 40px; border: 0; border-radius: 50%;
+    background: var(--ink); color: var(--ground); cursor: pointer;
+  }
+  .askbar-field:focus-within ~ .askbar-send { box-shadow: 0 0 0 3px color-mix(in oklab, var(--ink) 18%, transparent); }
+  .hero-lede { padding-bottom: 5.5rem; }
+  /* Keep the status line clear of the bar. */
+  .statusline { bottom: 1.6em; }
+
+  /* Highlights: rounded figure cards beside short headlines. */
+  .hl { display: grid; gap: calc(var(--space) * 1.4); margin-top: var(--space); }
+  .hl-row { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 1.6em; align-items: center; }
+  .hl-card {
+    position: relative; aspect-ratio: 1; display: grid; place-content: center; justify-items: center;
+    border-radius: 28px;
+    background: radial-gradient(120% 90% at 30% 15%, rgb(126 126 126 / 0.06), rgb(126 126 126 / 0.16));
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.5), 0 20px 40px -28px rgb(0 0 0 / 0.4);
+    overflow: hidden;
+  }
+  .hl-figure { font-family: var(--font-serif); font-size: clamp(4em, 9vw, 6.5em); line-height: 0.9; letter-spacing: -0.03em; }
+  .hl-caption { margin-top: 0.5em; font-size: 0.75em; color: var(--dim); }
+  .hl-title { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 1.7em; line-height: 1.05; letter-spacing: -0.01em; }
+  .content .hl-text { margin: 0.6em 0 0.8em; color: var(--dim); font-size: 0.9em; }
+  .hl-link { font-size: 0.85em; color: var(--ink); text-decoration: none; font-weight: 600; }
+  .hl-link span { display: inline-block; transition: transform 0.25s ease; }
+  .hl-link:hover span { transform: translateX(3px); }
+  @media (max-width: 600px) {
+    .hl-row { grid-template-columns: 1fr; gap: 1em; }
+    .hl-card { aspect-ratio: 16 / 10; }
+  }
 
   .table { width: 100%; border-collapse: collapse; }
   .table th, .table td { padding: 0.6em 1em 0.6em 0; border-top: 1px solid var(--rule); text-align: left; vertical-align: top; font-weight: 400; }
@@ -412,9 +431,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ticker-track, .badge-ring, .cursor-blink { animation: none; }
+  .ticker-track, .cursor-blink { animation: none; }
 }
 
 @media print {
-  .toc-panel, .menu-button, .contact-dock, .statusline { display: none !important; }
+  .toc-panel, .menu-button, .askbar, .statusline { display: none !important; }
 }

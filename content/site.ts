@@ -42,6 +42,46 @@ export const site = {
   social: [] as { label: string; href: string }[],
 };
 
+// Example questions that rotate in the floating "Ask me anything" bar.
+export const askExamples = [
+  "Can you build an AI assistant for my business?",
+  "How would you automate our order follow-ups?",
+  "Are you available for a new project?",
+  "What did you build at JOYC Brands?",
+];
+
+// Short wins, shown as feature rows in the Highlights section.
+export const highlights = [
+  {
+    figure: "40h",
+    caption: "a month, back",
+    title: "30–40 hours a month, back.",
+    text: "The sourcing team at JOYC Brands stopped chasing emails and spreadsheets. One workflow now reads, sorts and drafts for them.",
+    link: { label: "See the work", href: "#experience" },
+  },
+  {
+    figure: "1",
+    caption: "engineer, idea to beta",
+    title: "From idea to beta, on my own.",
+    text: "As the only AI engineer at JOYC Brands, I designed and built the whole sourcing system end to end.",
+    link: { label: "Read the story", href: "#about" },
+  },
+  {
+    figure: "3",
+    caption: "countries, one team",
+    title: "One team across three countries.",
+    text: "At OFI Services I led three AI consultants from Colombia, working side by side with engineers in the Netherlands and India.",
+    link: { label: "See my experience", href: "#experience" },
+  },
+  {
+    figure: "8",
+    caption: "sales on day one",
+    title: "A restaurant assistant that sells.",
+    text: "The WhatsApp assistant I built for Baruch Restaurant takes orders by itself. It closed 8 sales in its first launch.",
+    link: { label: "See the projects", href: "#projects" },
+  },
+];
+
 // The sideways-scrolling strip under the hero.
 export const ticker = [
   "Agentic systems",

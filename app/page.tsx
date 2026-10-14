@@ -1,20 +1,24 @@
+import Image from "next/image";
+import { siClaude, siLanggraph, siN8n } from "simple-icons";
+import portrait from "@/assets/daivy.jpg";
+import { AskBar } from "@/components/ask-bar";
 import { ConsoleWink } from "@/components/console-wink";
-import { ContactDock } from "@/components/contact-dock";
+import { Highlights } from "@/components/highlights";
 import { Hero } from "@/components/motion/hero";
 import { Reveal, ScrubText, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { Stat } from "@/components/motion/stat";
 import { TypedPrompt } from "@/components/motion/typed-prompt";
 import { Section } from "@/components/section";
 import { techIcon } from "@/components/tech-icon";
-import { ContactPrompt } from "@/components/contact-prompt";
 import { Terminal } from "@/components/terminal";
 import { BeforeAfter, WelcomeBox } from "@/components/terminal-bits";
 import { Ticker } from "@/components/ticker";
 import { Toc, type TocItem } from "@/components/toc";
-import { education, experience, projects, site, ticker, toolkit } from "@/content/site";
+import { askExamples, education, experience, highlights, projects, site, ticker, toolkit } from "@/content/site";
 
 const sections = [
   { id: "about", label: "About", hint: "Who I am" },
+  { id: "highlights", label: "Highlights", hint: "A few wins" },
   { id: "experience", label: "Experience", hint: "Where I've worked" },
   { id: "projects", label: "Projects", hint: "Things I've built" },
   { id: "education", label: "Education", hint: "Where I studied" },
@@ -50,7 +54,32 @@ export default function Home() {
             </p>
           </Reveal>
           <blockquote className="pull">
-            <ScrubText text="I turn unstructured business processes into measurable operational capacity." />
+            <ScrubText
+              text="I turn unstructured business processes into measurable operational capacity."
+              parts={[
+                "I",
+                {
+                  inline: (
+                    <Image src={portrait} alt="" width={64} height={64} sizes="64px" className="inline-pic inline-photo" />
+                  ),
+                },
+                "turn unstructured business processes",
+                {
+                  inline: (
+                    <span className="inline-stack">
+                      {[siClaude, siN8n, siLanggraph].map((icon) => (
+                        <span key={icon.slug} className="inline-pic inline-logo" style={{ color: `#${icon.hex}` }}>
+                          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                            <path d={icon.path} />
+                          </svg>
+                        </span>
+                      ))}
+                    </span>
+                  ),
+                },
+                "into measurable operational capacity.",
+              ]}
+            />
             <cite>What I do, in one line</cite>
           </blockquote>
           <Reveal>
@@ -78,6 +107,10 @@ export default function Home() {
               ]}
             />
           </Reveal>
+        </Section>
+
+        <Section id="highlights" title="Highlights">
+          <Highlights items={highlights} />
         </Section>
 
         <Section id="experience" title="Experience">
@@ -163,11 +196,8 @@ export default function Home() {
             <p>
               The best way to reach me is by email at{" "}
               <a href={`mailto:${site.email}`}>{site.email}</a>. I&apos;m happy to talk about AI products,
-              agentic systems and automation work. Or just type below:
+              agentic systems and automation work. Or just use the box at the bottom of the screen.
             </p>
-          </Reveal>
-          <Reveal>
-            <ContactPrompt email={site.email} />
           </Reveal>
           {site.social.length > 0 && (
             <Stagger className="bullets">
@@ -193,7 +223,7 @@ export default function Home() {
         <ConsoleWink />
       </main>
 
-      <ContactDock />
+      <AskBar email={site.email} name={site.name} examples={askExamples} />
       <Terminal sections={sections} email={site.email} />
     </div>
   );

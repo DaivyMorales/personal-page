@@ -86,20 +86,54 @@ function Word({ word, range, progress }: { word: string; range: [number, number]
   );
 }
 
-/** Text whose words light up one by one as it scrolls through the screen. */
-export function ScrubText({ text }: { text: string }) {
+function Inline({ node, range, progress }: { node: React.ReactNode; range: [number, number]; progress: MotionValue<number> }) {
+  const opacity = useTransform(progress, range, [0, 1]);
+  const scale = useTransform(progress, range, [0.3, 1]);
+  const rotate = useTransform(progress, range, [-25, 0]);
+  return (
+    <motion.span style={{ opacity, scale, rotate }} className="scrub-inline">
+      {node}
+    </motion.span>
+  );
+}
+
+export type ScrubPart = string | { inline: React.ReactNode };
+
+/**
+ * A sentence whose words light up one by one as it scrolls through the screen. Parts can
+ * include small inline pictures that pop in at their place in the sentence, as on america.gov.
+ */
+export function ScrubText({ text, parts }: { text: string; parts?: ScrubPart[] }) {
   const ref = useRef<HTMLSpanElement>(null);
   const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.9", "start 0.35"] });
-  const words = text.split(" ");
 
-  if (reduce) return <span>{text}</span>;
+  // Flatten into units: each word, and each inline picture, gets its own slice of the scroll.
+  type Unit = { word: string } | { inline: React.ReactNode };
+  const units = (parts ?? [text]).flatMap<Unit>((p) =>
+    typeof p === "string" ? p.split(" ").filter(Boolean).map((word) => ({ word })) : [p],
+  );
+
+  if (reduce) {
+    return (
+      <span aria-label={text}>
+        <span aria-hidden="true">
+          {units.map((u, i) => ("word" in u ? `${u.word} ` : <span key={i} className="scrub-inline">{u.inline}</span>))}
+        </span>
+      </span>
+    );
+  }
   return (
     <span ref={ref} aria-label={text}>
       <span aria-hidden="true">
-        {words.map((w, i) => (
-          <Word key={i} word={w} progress={scrollYProgress} range={[i / words.length, (i + 1) / words.length]} />
-        ))}
+        {units.map((u, i) => {
+          const range: [number, number] = [i / units.length, (i + 1) / units.length];
+          return "word" in u ? (
+            <Word key={i} word={u.word} progress={scrollYProgress} range={range} />
+          ) : (
+            <Inline key={i} node={u.inline} progress={scrollYProgress} range={range} />
+          );
+        })}
       </span>
     </span>
   );
