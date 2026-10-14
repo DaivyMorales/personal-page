@@ -21,20 +21,20 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 96,
-          background: "#efebd9",
-          color: "#2b2a2d",
+          background: "#ffffff",
+          color: "#000000",
           fontSize: 40,
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <img src={portraitSrc} width={88} height={88} alt="" style={{ borderRadius: 999, marginRight: 12 }} />
-          <span style={{ fontWeight: 600, color: "#2e5339" }}>{site.name}</span>
-          <span style={{ color: "#5d5c55" }}>· {site.tagline}</span>
+          <span style={{ fontWeight: 600 }}>{site.name}</span>
+          <span style={{ color: "#8f8f8f" }}>· {site.tagline}</span>
         </div>
         <div style={{ display: "flex", fontSize: 64, lineHeight: 1.15, maxWidth: 900 }}>
           {site.headline}
         </div>
-        <div style={{ display: "flex", height: 1, background: "#9aab7c" }} />
+        <div style={{ display: "flex", height: 1, background: "#ebebeb" }} />
       </div>
     ),
     size,

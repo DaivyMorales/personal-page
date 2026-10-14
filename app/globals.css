@@ -2,50 +2,28 @@
 
 /* Style after clig.dev: a giant serif title, monospace body, sticky headings. */
 :root {
-  /* Palette: Negro Carbón, Verde Bosque Profundo, Verde Oliva Canopia, Susurro Sabio, Cálido Terracota, Crema Cálida. */
-  --carbon: #2b2a2d;
-  --bosque: #2e5339;
-  --oliva: #738f3d;
-  --sabio: #9aab7c;
-  --terracota: #a67e67;
-  --crema: #efebd9;
-
-  --ground: var(--crema);
-  --ink: var(--carbon);
-  --link: var(--bosque);
-  --name: var(--bosque);
-  --accent: var(--oliva);
-  --dim: color-mix(in oklab, var(--carbon) 68%, var(--crema));
-  --code: color-mix(in oklab, var(--sabio) 30%, transparent);
-  --rule: color-mix(in oklab, var(--sabio) 70%, transparent);
-  --focus: var(--bosque);
+  --ground: #ffffff;
+  --ink: #000000;
+  --dim: rgb(0 0 0 / 0.5);
+  --code: rgb(126 126 126 / 0.25);
+  --rule: rgb(126 126 126 / 0.4);
+  --focus: rgb(31 76 255);
   --space: 1.7em;
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --ground: var(--carbon);
-    --ink: var(--crema);
-    --link: var(--sabio);
-    --name: var(--crema);
-    --accent: var(--sabio);
-    --dim: color-mix(in oklab, var(--crema) 62%, var(--carbon));
-    --code: color-mix(in oklab, var(--sabio) 18%, transparent);
-    --rule: color-mix(in oklab, var(--sabio) 35%, transparent);
-    --focus: var(--oliva);
+    --ground: #000000;
+    --ink: #e6e6e6;
+    --dim: rgb(230 230 230 / 0.5);
+    --code: rgb(126 126 126 / 0.4);
     color-scheme: dark;
   }
 }
 
 @theme inline {
   --color-ground: var(--ground);
-  --color-bosque: var(--bosque);
-  --color-oliva: var(--oliva);
-  --color-sabio: var(--sabio);
-  --color-terracota: var(--terracota);
-  --color-crema: var(--crema);
-  --color-carbon: var(--carbon);
   --color-ink: var(--ink);
   --color-dim: var(--dim);
   --color-rule: var(--rule);
@@ -73,22 +51,13 @@
   @media (min-width: 1200px) { body { font-size: 17px; } }
   @media (min-width: 1600px) { body { font-size: 20px; } }
 
-  a {
-    color: var(--link);
-    text-decoration: underline;
-    text-decoration-color: color-mix(in oklab, var(--link) 45%, transparent);
-    text-underline-offset: 0.3em;
-    text-decoration-thickness: 1px;
-    transition: text-decoration-color 0.25s ease;
-  }
-  a:hover { text-decoration-color: var(--terracota); }
-  ::selection { background: var(--sabio); color: var(--carbon); }
+  a { color: inherit; text-decoration: underline; text-underline-offset: 0.3em; text-decoration-thickness: 1px; }
   strong { font-weight: 600; }
   em { font-style: italic; }
   code { padding: 0 0.25em; background: var(--code); }
 
   a:focus-visible, button:focus-visible {
-    color: var(--crema);
+    color: #fff;
     background: var(--focus);
     outline: none;
     text-decoration: underline;
@@ -117,8 +86,7 @@
 
   .toc { list-style: none; margin: 0; padding: 0; font-family: var(--font-serif); font-size: 1.15em; }
   .toc li + li { padding-top: calc(var(--space) * 0.25); }
-  .toc a { color: var(--ink); text-decoration: none; opacity: 0.5; transition: opacity 0.3s ease, color 0.3s ease; }
-  .toc a[aria-current] { color: var(--link); }
+  .toc a { text-decoration: none; opacity: 0.5; transition: opacity 0.3s ease; }
   .toc a:hover, .toc a:focus-visible, .toc a[aria-current] { opacity: 1; }
   .toc a:hover { text-decoration: underline; }
 
@@ -128,7 +96,6 @@
     height: 75vh; margin: 0 auto; padding-top: 0.5em;
     font-family: var(--font-serif); font-weight: 400;
     font-size: min(28vw, 34vh); line-height: 1; letter-spacing: -0.02em;
-    color: var(--name);
     text-align: center;
   }
   .hero-lede {
@@ -156,8 +123,7 @@
     content: attr(data-prefix) ":";
     padding-right: 0.5em;
     font-family: var(--font-mono); font-size: 0.66em;
-    color: var(--link);
-    opacity: 0.8;
+    opacity: 0.5;
   }
   .content h2::after {
     content: "";
@@ -178,34 +144,33 @@
     content: "";
     position: absolute; left: 0.5em; top: 0.4em;
     width: 0.6em; height: 0.6em; border-radius: 50%;
-    background: var(--accent);
+    background: var(--ink);
   }
 
   .pull {
     margin: calc(var(--space) * 1.5) 0;
     font-family: var(--font-serif); font-size: 1.9em; line-height: 1.15;
   }
-  .pull { padding-left: 0.55em; border-left: 2px solid var(--terracota); }
-  .pull cite { display: block; margin-top: 0.6em; font-family: var(--font-mono); font-size: 0.45em; font-style: normal; color: var(--dim); }
+  .pull cite { display: block; margin-top: 0.6em; font-family: var(--font-mono); font-size: 0.45em; font-style: normal; opacity: 0.5; }
 
   /* A job: serif title, mono meta line, then highlights. */
   .role + .role { margin-top: calc(var(--space) * 1.6); }
   .role-title { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 1.35em; line-height: 1.2; }
   .role-at { color: var(--dim); font-style: italic; }
-  .content .role-meta { margin: 0.35em 0 0; color: var(--link); font-size: 0.85em; }
+  .content .role-meta { margin: 0.35em 0 0; color: var(--dim); font-size: 0.85em; }
   .content .role p:not(.role-meta) { margin: calc(var(--space) * 0.6) 0; }
   .content .role .bullets { margin-top: calc(var(--space) * 0.6); }
 
   /* Toolkit: a row of chips per area, each with the technology's icon. */
   .tech-group + .tech-group { margin-top: calc(var(--space) * 0.9); }
-  .tech-area { margin: 0 0 0.6em; font-weight: 600; font-size: 0.85em; color: var(--link); }
+  .tech-area { margin: 0 0 0.6em; font-weight: 600; font-size: 0.85em; color: var(--dim); }
   .content .tech-list { display: flex; flex-wrap: wrap; gap: 0.5em; margin: 0; padding: 0; list-style: none; }
   .tech-chip {
     display: inline-flex; align-items: center; gap: 0.5em;
     padding: 0.35em 0.75em 0.35em 0.55em;
     border: 1px solid var(--rule); border-radius: 999px;
     font-size: 0.85em; line-height: 1.2;
-    background: color-mix(in oklab, var(--sabio) 9%, transparent);
+    background: transparent;
     transition: border-color 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
   }
   .tech-icon { display: inline-grid; place-items: center; width: 1.15em; height: 1.15em; color: var(--ink); transition: color 0.25s ease; }
@@ -214,8 +179,8 @@
     font-family: var(--font-mono); font-weight: 600; font-size: 0.62em; letter-spacing: -0.02em;
     line-height: 1; white-space: nowrap;
   }
-  .tech-chip:hover { border-color: var(--link); transform: translateY(-1px); }
-  .tech-chip:hover .tech-icon { color: var(--brand, var(--link)); }
+  .tech-chip:hover { border-color: var(--ink); transform: translateY(-1px); }
+  .tech-chip:hover .tech-icon { color: var(--brand, var(--ink)); }
   @media (prefers-color-scheme: dark) {
     .tech-chip[data-dark-brand]:hover .tech-icon { color: var(--ink); }
   }
@@ -225,7 +190,7 @@
   .table tr:last-child th, .table tr:last-child td { border-bottom: 1px solid var(--rule); }
   .table th { font-weight: 600; white-space: nowrap; }
   .table td:last-child { padding-right: 0; }
-  .table .num { white-space: nowrap; color: var(--link); }
+  .table .num { white-space: nowrap; opacity: 0.5; }
   @media (max-width: 600px) {
     .table tr { display: grid; grid-template-columns: minmax(0, 1fr) auto; border-top: 1px solid var(--rule); padding: 0.6em 0; }
     .table tr:last-child { border-bottom: 1px solid var(--rule); }
