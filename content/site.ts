@@ -53,32 +53,40 @@ export const askExamples = [
 // The "How I work" page at /philosophy, linked quietly from the footer and the / menu.
 export const philosophy = {
   intro:
-    "A few principles I keep coming back to, whether I'm building alone or leading a team. They're less a method than a habit.",
+    "Skills can be learned and tools change every year. These are the things I won't trade for speed or money, whether I'm building alone or leading a team.",
   statement: "Build it with care, for the people who will actually use it.",
   principles: [
     {
+      title: "Honesty, always.",
+      text: "I tell clients and teammates the truth, even when it's not what they hoped to hear. Real results, plain words, no tricks.",
+    },
+    {
+      title: "My word is my contract.",
+      text: "If I say it will be done on Friday, it's done on Friday. If something changes, you hear it from me first, not from a missed deadline.",
+    },
+    {
+      title: "Integrity when no one is watching.",
+      text: "The parts nobody will check get the same care as the demo. That's where trust is really earned.",
+    },
+    {
+      title: "Humble enough to learn.",
+      text: "I admit mistakes quickly, ask for help early and treat every project as a chance to get better.",
+    },
+    {
+      title: "People over output.",
+      text: "I respect the people I work with and the people I build for. Good technology gives them time back for what matters most.",
+    },
+    {
       title: "Craft over speed.",
-      text: "I'd rather ship something right a little later than something careless on time. Quality is a form of respect for the people who use it.",
-    },
-    {
-      title: "Small things, done well.",
-      text: "A clear message, a careful detail, a deadline kept. Trust is built in the small stuff long before the big launch.",
-    },
-    {
-      title: "Technology should give people time back.",
-      text: "The best automation quietly disappears and leaves people more time for the work only they can do.",
-    },
-    {
-      title: "Honest numbers.",
-      text: "Real results, plain words, no tricks. If something can't be done well, I say so early.",
+      text: "I'd rather ship something right a little later than something careless on time. Quality is a form of respect.",
     },
     {
       title: "Ownership, end to end.",
-      text: "From the first idea to the beta in people's hands, I treat the whole product as mine to get right.",
+      text: "From the first idea to the beta in people's hands, I treat the whole product as mine to get right, including the parts that go wrong.",
     },
     {
       title: "Share what I know.",
-      text: "Most of what I know, someone once took the time to teach me. I try to do the same for the people I work with.",
+      text: "Most of what I know, someone once took the time to teach me. I try to do the same for the people around me.",
     },
   ],
 };
