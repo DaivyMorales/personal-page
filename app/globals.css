@@ -188,6 +188,14 @@
   .pull { padding-left: 0.55em; border-left: 2px solid var(--terracota); }
   .pull cite { display: block; margin-top: 0.6em; font-family: var(--font-mono); font-size: 0.45em; font-style: normal; color: var(--dim); }
 
+  /* A job: serif title, mono meta line, then highlights. */
+  .role + .role { margin-top: calc(var(--space) * 1.6); }
+  .role-title { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 1.35em; line-height: 1.2; }
+  .role-at { color: var(--dim); font-style: italic; }
+  .content .role-meta { margin: 0.35em 0 0; color: var(--link); font-size: 0.85em; }
+  .content .role p:not(.role-meta) { margin: calc(var(--space) * 0.6) 0; }
+  .content .role .bullets { margin-top: calc(var(--space) * 0.6); }
+
   .table { width: 100%; border-collapse: collapse; }
   .table th, .table td { padding: 0.6em 1em 0.6em 0; border-top: 1px solid var(--rule); text-align: left; vertical-align: top; font-weight: 400; }
   .table tr:last-child th, .table tr:last-child td { border-bottom: 1px solid var(--rule); }
