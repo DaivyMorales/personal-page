@@ -42,7 +42,7 @@ const item: Variants = {
   show: { opacity: 1, x: 0, filter: "blur(0px)", transition: { duration: 0.75, ease } },
 };
 
-const lists = { ul: motion.ul, tbody: motion.tbody } as const;
+const lists = { ul: motion.ul, ol: motion.ol, tbody: motion.tbody } as const;
 const items = { li: motion.li, tr: motion.tr } as const;
 
 /** A list whose items slide in one after another. Pair with <StaggerItem>. */

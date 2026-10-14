@@ -13,10 +13,11 @@ import { Terminal } from "@/components/terminal";
 import { BeforeAfter, WelcomeBox } from "@/components/terminal-bits";
 import { Ticker } from "@/components/ticker";
 import { Toc, type TocItem } from "@/components/toc";
-import { askExamples, education, experience, projects, site, ticker, toolkit } from "@/content/site";
+import { askExamples, education, experience, philosophy, projects, site, ticker, toolkit } from "@/content/site";
 
 const sections = [
   { id: "about", label: "About", hint: "Who I am" },
+  { id: "philosophy", label: "Philosophy", hint: "What I believe" },
   { id: "experience", label: "Experience", hint: "Where I've worked" },
   { id: "projects", label: "Projects", hint: "Things I've built" },
   { id: "education", label: "Education", hint: "Where I studied" },
@@ -105,6 +106,35 @@ export default function Home() {
               ]}
             />
           </Reveal>
+        </Section>
+
+        <Section id="philosophy" title="Philosophy">
+          <Reveal>
+            <p>{philosophy.intro}</p>
+          </Reveal>
+          <blockquote className="verse">
+            <svg className="verse-cross" viewBox="0 0 10 14" aria-hidden="true">
+              <path d="M4 0h2v4h4v2H6v8H4V6H0V4h4z" fill="currentColor" />
+            </svg>
+            <p className="verse-text">
+              <ScrubText text={philosophy.verse.text} />
+            </p>
+            <cite>{philosophy.verse.ref}</cite>
+          </blockquote>
+          <Stagger as="ol" className="creed">
+            {philosophy.principles.map((p, i) => (
+              <StaggerItem key={p.title} className="creed-item">
+                <span className="creed-num" aria-hidden="true">
+                  {["I", "II", "III", "IV", "V", "VI", "VII"][i]}
+                </span>
+                <div>
+                  <h3 className="creed-title">{p.title}</h3>
+                  <p className="creed-text">{p.text}</p>
+                  <p className="creed-ref">{p.ref}</p>
+                </div>
+              </StaggerItem>
+            ))}
+          </Stagger>
         </Section>
 
         <Section id="experience" title="Experience">

@@ -50,6 +50,43 @@ export const askExamples = [
   "What did you build at JOYC Brands?",
 ];
 
+// The Philosophy section. Written in Daivy's voice; edit freely.
+export const philosophy = {
+  intro:
+    "I'm a Christian, and my faith shapes how I work more than any method or framework does. These are the few things I try to live by when I build.",
+  verse: {
+    text: "Whatever you do, work at it with all your heart, as working for the Lord.",
+    ref: "Colossians 3:23",
+  },
+  principles: [
+    {
+      title: "Excellence, offered.",
+      text: "I build every product as if it will be seen by God, because it will. Doing it well is my way of saying thank you.",
+      ref: "Colossians 3:23",
+    },
+    {
+      title: "Faithful in small things.",
+      text: "A clear message, a careful detail, a promise kept on time. Small things done well are how trust is built.",
+      ref: "Luke 16:10",
+    },
+    {
+      title: "Technology serves people.",
+      text: "Good tools give people their time back for what matters most: their families, their rest, each other.",
+      ref: "Mark 2:27",
+    },
+    {
+      title: "Honest work.",
+      text: "Real numbers, plain words and no tricks. If something can't be done well, I say so.",
+      ref: "Proverbs 12:22",
+    },
+    {
+      title: "Every skill is a gift.",
+      text: "Nothing I know is mine to boast about. I hold it with gratitude and share it gladly.",
+      ref: "James 1:17",
+    },
+  ],
+};
+
 // The sideways-scrolling strip under the hero.
 export const ticker = [
   "Agentic systems",

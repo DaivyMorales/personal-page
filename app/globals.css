@@ -394,6 +394,31 @@
   /* Keep the status line clear of the bar. */
   .statusline { bottom: 1.6em; }
 
+  /* Philosophy: a verse that lights up, then a numbered creed. */
+  .verse {
+    margin: calc(var(--space) * 1.6) 0;
+    padding: calc(var(--space) * 1.2) 0;
+    border-top: 1px solid var(--rule);
+    margin-bottom: 0;
+    text-align: center;
+  }
+  .verse-cross { display: block; width: 0.7em; height: 1em; margin: 0 auto 0.9em; opacity: 0.8; }
+  .content .verse-text {
+    margin: 0 auto; max-width: 20em;
+    font-family: var(--font-serif); font-size: 2.1em; line-height: 1.12; letter-spacing: -0.01em;
+  }
+  .verse cite { display: block; margin-top: 0.9em; font-size: 0.8em; font-style: normal; color: var(--dim); letter-spacing: 0.06em; }
+  .content .creed { list-style: none; margin: 0; padding: 0; }
+  .creed-item {
+    display: grid; grid-template-columns: 3.2em 1fr; gap: 0.6em;
+    padding: 1em 0; border-top: 1px solid var(--rule);
+  }
+  .creed-item:last-child { border-bottom: 1px solid var(--rule); }
+  .creed-num { font-family: var(--font-serif); font-size: 1.6em; line-height: 1; color: var(--dim); }
+  .creed-title { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 1.45em; line-height: 1.1; }
+  .content .creed-text { margin: 0.35em 0 0; }
+  .content .creed-ref { margin: 0.4em 0 0; font-size: 0.75em; color: var(--dim); letter-spacing: 0.04em; }
+
   .table { width: 100%; border-collapse: collapse; }
   .table th, .table td { padding: 0.6em 1em 0.6em 0; border-top: 1px solid var(--rule); text-align: left; vertical-align: top; font-weight: 400; }
   .table tr:last-child th, .table tr:last-child td { border-bottom: 1px solid var(--rule); }
