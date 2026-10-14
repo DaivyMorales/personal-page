@@ -1,31 +1,45 @@
+"use client";
+
+import { motion } from "motion/react";
 import Image from "next/image";
 import portrait from "@/assets/daivy.jpg";
-import { MailIcon } from "@/components/icons";
+import { Magnetic } from "@/components/motion/chrome";
 import { site } from "@/content/site";
 
-/** Floating pill at the bottom of the screen: your photo and an email button. */
+/** Floating bar at the bottom of the screen: your photo and a magnetic email button. */
 export function ContactDock() {
   return (
-    <div className="fixed inset-x-0 bottom-5 z-20 flex justify-center px-4 pointer-events-none">
-      <div className="pointer-events-auto flex items-center gap-1 rounded-[14px] bg-card p-1 shadow-[var(--card-shadow)]">
-        <Image
-          src={portrait}
-          alt={`Portrait of ${site.name}`}
-          width={36}
-          height={36}
-          sizes="36px"
-          placeholder="blur"
-          preload
-          className="size-9 rounded-[10px] object-cover"
-        />
-        <a
-          href={`mailto:${site.email}`}
-          className="flex h-9 items-center gap-2 rounded-[10px] bg-ink px-3.5 text-[13px] font-medium text-ground no-underline transition-opacity hover:opacity-85"
+    <motion.div
+      className="contact-dock pointer-events-none fixed inset-x-0 bottom-5 z-20 flex justify-center px-4"
+      initial={{ y: 120, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ type: "spring", stiffness: 160, damping: 18, delay: 1.4 }}
+    >
+      <div className="pointer-events-auto flex items-center gap-1 rounded-[7px] border border-rule bg-ground p-1">
+        <motion.div
+          whileHover={{ rotate: -6, scale: 1.12 }}
+          transition={{ type: "spring", stiffness: 300, damping: 14 }}
         >
-          <MailIcon />
-          Reach out via email
-        </a>
+          <Image
+            src={portrait}
+            alt={`Portrait of ${site.name}`}
+            width={36}
+            height={36}
+            sizes="36px"
+            preload
+            className="size-9 rounded-[4px] object-cover grayscale transition-[filter] duration-500 hover:grayscale-0"
+          />
+        </motion.div>
+        <Magnetic>
+          <motion.a
+            href={`mailto:${site.email}`}
+            className="flex h-9 items-center rounded-[4px] bg-ink px-3.5 text-[0.8em] text-ground no-underline"
+            whileTap={{ scale: 0.94 }}
+          >
+            Reach out via email
+          </motion.a>
+        </Magnetic>
       </div>
-    </div>
+    </motion.div>
   );
 }

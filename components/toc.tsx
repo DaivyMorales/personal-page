@@ -1,11 +1,13 @@
 "use client";
 
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 
 export type TocItem = { id: string; label: string };
 
-/** "On this page" list that highlights the section currently in view. */
-export function Toc({ items }: { items: TocItem[] }) {
+const ease = [0.22, 1, 0.36, 1] as const;
+
+function useActiveSection(items: TocItem[]) {
   const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
@@ -15,7 +17,7 @@ export function Toc({ items }: { items: TocItem[] }) {
           if (entry.isIntersecting) setActive(entry.target.id);
         }
       },
-      { rootMargin: "-40% 0px -55% 0px" },
+      { rootMargin: "-30% 0px -65% 0px" },
     );
     for (const { id } of items) {
       const el = document.getElementById(id);
@@ -24,19 +26,87 @@ export function Toc({ items }: { items: TocItem[] }) {
     return () => observer.disconnect();
   }, [items]);
 
+  return active;
+}
+
+/** Sticky contents list on wide screens; a "Contents" button with a full-screen menu on narrow ones. */
+export function Toc({ items }: { items: TocItem[] }) {
+  const active = useActiveSection(items);
+  const [open, setOpen] = useState(false);
+
   return (
-    <ol aria-label="On this page" className="toc m-0 grid list-none gap-1.5 p-0">
-      {items.map(({ id, label }, i) => (
-        <li key={id} style={{ "--i": i } as React.CSSProperties}>
-          <a
-            href={`#${id}`}
-            className="nav-link"
-            aria-current={active === id ? "location" : undefined}
+    <>
+      <nav aria-label="Contents" className="toc-panel">
+        <ul className="toc">
+          {items.map(({ id, label }) => (
+            <li key={id} className="relative">
+              {active === id && (
+                <motion.span
+                  layoutId="toc-active"
+                  aria-hidden="true"
+                  className="absolute top-1/2 -left-[1.1em] h-px w-[0.7em] bg-ink"
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
+              <motion.a
+                href={`#${id}`}
+                aria-current={active === id ? "location" : undefined}
+                className="inline-block"
+                animate={{ x: active === id ? 6 : 0 }}
+                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+              >
+                {label}
+              </motion.a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <button
+        type="button"
+        className="menu-button fixed top-0 right-0 z-30 cursor-pointer bg-transparent px-[1.7em] py-[0.85em] min-[901px]:hidden"
+        aria-expanded={open}
+        aria-controls="toc-menu"
+        onClick={() => setOpen((o) => !o)}
+      >
+        {open ? "Close" : "Contents"}
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.nav
+            id="toc-menu"
+            aria-label="Contents"
+            className="fixed inset-0 z-20 overflow-auto bg-ground/90 px-[1.7em] pt-[3.4em] min-[901px]:hidden"
+            initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            animate={{ opacity: 1, backdropFilter: "blur(6px)" }}
+            exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+            transition={{ duration: 0.35 }}
           >
-            {label}
-          </a>
-        </li>
-      ))}
-    </ol>
+            <motion.ul
+              className="toc text-[2em]"
+              initial="hidden"
+              animate="show"
+              exit="hidden"
+              variants={{ show: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } }, hidden: {} }}
+            >
+              {items.map(({ id, label }) => (
+                <motion.li
+                  key={id}
+                  className="overflow-hidden"
+                  variants={{
+                    hidden: { opacity: 0, y: "100%" },
+                    show: { opacity: 1, y: "0%", transition: { duration: 0.6, ease } },
+                  }}
+                >
+                  <a href={`#${id}`} className="opacity-100!" onClick={() => setOpen(false)}>
+                    {label}
+                  </a>
+                </motion.li>
+              ))}
+            </motion.ul>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

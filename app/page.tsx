@@ -1,7 +1,7 @@
 import { ContactDock } from "@/components/contact-dock";
-import { socialIcons } from "@/components/icons";
-import { Section, SideNote } from "@/components/section";
-import { SiteNav } from "@/components/site-nav";
+import { Hero } from "@/components/motion/hero";
+import { Reveal, ScrubText, Stagger, StaggerItem } from "@/components/motion/reveal";
+import { Section } from "@/components/section";
 import { Toc, type TocItem } from "@/components/toc";
 import { experience, projects, site, toolkit } from "@/content/site";
 
@@ -15,144 +15,105 @@ const sections: TocItem[] = [
 
 export default function Home() {
   return (
-    <div className="page">
-      <aside className="rail">
-        <SiteNav current="/" />
-        <Toc items={sections} />
-      </aside>
+    <div className="layout">
+      <Hero name={site.name}>
+        <p className="m-0">
+          {site.bio} <a href="#about">Read on</a>.
+        </p>
+      </Hero>
 
-      <main className="column">
-        <header className="flex min-h-[calc(100svh-120px)] flex-col">
-          <div className="my-auto py-16">
-            <p className="m-0 inline-flex h-8 items-center rounded-full bg-card px-3.5 text-[14px] shadow-[var(--card-shadow)]">
-              <span className="text-muted">Hi,&nbsp;</span>I&apos;m {site.name}
-              <span className="ml-1.5" aria-hidden="true">👋</span>
+      <Toc items={sections} />
+
+      <main className="content">
+        <Section id="about" title="About">
+          <Reveal>
+            <p>
+              Hi, I&apos;m <strong>{site.name}</strong>. Replace this paragraph with a few honest lines
+              about who you are, what you work on, and the kind of problems you enjoy.
             </p>
-            <h1 className="mt-5 mb-0 max-w-[18ch] font-serif text-[44px]/[1.05] font-normal tracking-[-0.01em] text-balance sm:text-[56px]">
-              {site.headline}
-            </h1>
-
-            <div className="mt-12 grid gap-8 sm:grid-cols-[1fr_220px]">
-              <ul className="m-0 flex list-none gap-2 p-0">
-                {site.social.map(({ label, href }) => {
-                  const Icon = socialIcons[label];
-                  return (
-                    <li key={label}>
-                      <a
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${site.name} on ${label}`}
-                        className="grid size-10 place-items-center rounded-full bg-card text-ink shadow-[var(--card-shadow)] transition-transform duration-300 hover:-translate-y-0.5"
-                      >
-                        <Icon />
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-              <div>
-                <p className="m-0 text-[13.5px]/[21px] text-text-2">{site.bio}</p>
-                <a href="#about" className="mt-5 inline-flex items-center gap-1.5 text-[13.5px] text-ink no-underline">
-                  Discover <span aria-hidden="true">↓</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </header>
-
-        <Section id="about" index={1} title="About">
-          <p>
-            Hi, I&apos;m {site.name}. Replace this paragraph with a few honest lines about who you are,
-            what you work on, and <span className="u">the kind of problems you enjoy</span>.
-            <SideNote n={1}>Margin notes like this one sit beside the text on wide screens.</SideNote>
-          </p>
+          </Reveal>
           <blockquote className="pull">
-            A line you live by, or something someone once told you.
+            <ScrubText text="A line you live by, or something someone once told you." />
             <cite>Who said it</cite>
           </blockquote>
-          <p>
-            A second paragraph can say what you are doing <em>right now</em>: learning, building,
-            or looking for.
-          </p>
+          <Reveal>
+            <p>
+              A second paragraph can say what you are doing <em>right now</em>: learning, building, or
+              looking for.
+            </p>
+          </Reveal>
         </Section>
 
-        <Section id="projects" index={2} title="Projects">
-          <p>A few things I have built. Each one taught me something different.</p>
-          <ul className="mt-6 mb-7 grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-2">
-            {projects.map((p) => {
-              const body = (
-                <>
-                  <span className="flex items-baseline justify-between gap-3">
-                    <strong className="font-[550]">{p.name}</strong>
-                    <span className="text-xs text-muted">{p.kind}</span>
-                  </span>
-                  <span className="mt-1 block text-[13px]/5 text-text-2">{p.description}</span>
-                </>
-              );
-              return (
-                <li key={p.name}>
+        <Section id="projects" title="Projects">
+          <Reveal>
+            <p>A few things I have built. Each one taught me something different.</p>
+          </Reveal>
+          <Stagger className="bullets">
+            {projects.map((p) => (
+              <StaggerItem key={p.name}>
+                <strong>
                   {p.href ? (
-                    <a href={p.href} className="card block h-full px-4 py-3.5 no-underline" target="_blank" rel="noopener noreferrer">
-                      {body}
-                    </a>
+                    <a href={p.href} target="_blank" rel="noopener noreferrer">{p.name}</a>
                   ) : (
-                    <div className="card h-full px-4 py-3.5">{body}</div>
+                    p.name
                   )}
-                </li>
-              );
-            })}
-          </ul>
+                </strong>
+                <span className="opacity-50"> ({p.kind})</span>
+                <br />
+                {p.description}
+              </StaggerItem>
+            ))}
+          </Stagger>
         </Section>
 
-        <Section id="experience" index={3} title="Experience">
-          <p>Where I have worked and what I did there.</p>
+        <Section id="experience" title="Experience">
+          <Reveal>
+            <p>Where I have worked and what I did there.</p>
+          </Reveal>
           <table className="table">
-            <tbody>
+            <Stagger as="tbody">
               {experience.map((r) => (
-                <tr key={r.period}>
+                <StaggerItem as="tr" key={r.period}>
                   <th scope="row">{r.title}</th>
                   <td className="num">{r.period}</td>
                   <td>
-                    <span className="text-ink">{r.where}.</span> {r.note}
+                    {r.where}. {r.note}
                   </td>
-                </tr>
+                </StaggerItem>
               ))}
-            </tbody>
+            </Stagger>
           </table>
         </Section>
 
-        <Section id="toolkit" index={4} title="Toolkit">
-          <dl className="m-0 grid grid-cols-[120px_1fr] text-[13px]/5">
+        <Section id="toolkit" title="Toolkit">
+          <Stagger className="bullets">
             {toolkit.map(({ area, items }) => (
-              <div key={area} className="contents">
-                <dt className="border-t border-rule py-2 text-muted">{area}</dt>
-                <dd className="m-0 border-t border-rule py-2">{items}</dd>
-              </div>
+              <StaggerItem key={area}>
+                <strong>{area}:</strong> {items}
+              </StaggerItem>
             ))}
-          </dl>
+          </Stagger>
         </Section>
 
-        <Section id="contact" index={5} title="Contact">
-          <p>
-            The best way to reach me is by email at{" "}
-            <a href={`mailto:${site.email}`} className="u">{site.email}</a>. I read everything.
-          </p>
-          <ul className="m-0 flex list-none flex-wrap gap-x-[18px] gap-y-1 p-0">
+        <Section id="contact" title="Contact">
+          <Reveal>
+            <p>
+              The best way to reach me is by email at{" "}
+              <a href={`mailto:${site.email}`}>{site.email}</a>. I read everything.
+            </p>
+          </Reveal>
+          <Stagger className="bullets">
             {site.social.map(({ label, href }) => (
-              <li key={label}>
-                <a href={href} className="nav-link" target="_blank" rel="noopener noreferrer">
-                  {label} ↗
-                </a>
-              </li>
+              <StaggerItem key={label}>
+                <a href={href} target="_blank" rel="noopener noreferrer">{label}</a>
+              </StaggerItem>
             ))}
-          </ul>
+          </Stagger>
         </Section>
 
-        <footer className="mt-24 text-xs text-muted">
-          © {site.name}
-        </footer>
+        <footer className="pb-32 opacity-50">© {site.name}</footer>
       </main>
+
       <ContactDock />
     </div>
   );

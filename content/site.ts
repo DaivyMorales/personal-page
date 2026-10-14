@@ -18,12 +18,6 @@ export const site = {
   ],
 } as const;
 
-export const nav = [
-  { label: "Home", href: "/" },
-  { label: "Projects", href: "/#projects" },
-  { label: "Contact", href: "/#contact" },
-] as const;
-
 export type Project = {
   name: string;
   kind: string;

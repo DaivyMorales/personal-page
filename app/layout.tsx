@@ -1,14 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Serif, Inter } from "next/font/google";
+import { IBM_Plex_Mono, Instrument_Serif } from "next/font/google";
+import { MotionProvider, ScrollProgress } from "@/components/motion/chrome";
 import { site } from "@/content/site";
 import "./globals.css";
 
 // Every page on this site is static. Fail the build if that ever changes.
 export const ensureStatic = "navigation";
 
-const inter = Inter({
-  variable: "--font-inter",
+const plexMono = IBM_Plex_Mono({
+  variable: "--font-plex-mono",
   subsets: ["latin"],
+  weight: ["400", "600"],
+  style: ["normal", "italic"],
 });
 
 const serif = Instrument_Serif({
@@ -40,15 +43,20 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f0f0f" },
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
   ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} ${serif.variable}`}>
-      <body>{children}</body>
+    <html lang="en" className={`${plexMono.variable} ${serif.variable}`}>
+      <body>
+        <MotionProvider>
+          <ScrollProgress />
+          {children}
+        </MotionProvider>
+      </body>
     </html>
   );
 }
