@@ -67,13 +67,14 @@ export function PhilosophyModal({
   return (
     <>
       <button ref={buttonRef} type="button" className="pm-teaser" onClick={show} aria-haspopup="dialog">
-        <span className="pm-teaser-ring" aria-hidden="true" />
-        <span className="pm-teaser-text">
-          Want to know how I work?
-          <span className="pm-teaser-cta">Open my philosophy</span>
+        <span className="pm-teaser-line">
+          <span className="pm-teaser-words">Want to know how I work?</span>
+          <span className="pm-teaser-arrow" aria-hidden="true">
+            ↗
+          </span>
         </span>
-        <span className="pm-teaser-arrow" aria-hidden="true">
-          →
+        <span className="pm-teaser-keys" aria-hidden="true">
+          Honesty · Trust · Integrity · Humility · People · Craft · Ownership · Generosity
         </span>
       </button>
 

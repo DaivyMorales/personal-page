@@ -19,12 +19,12 @@ import { askExamples, education, experience, philosophy, projects, site, ticker,
 
 const sections = [
   { id: "about", label: "About", hint: "Who I am" },
-  { id: "philosophy", label: "Philosophy", hint: "How I work" },
   { id: "experience", label: "Experience", hint: "Where I've worked" },
   { id: "projects", label: "Projects", hint: "Things I've built" },
   { id: "education", label: "Education", hint: "Where I studied" },
   { id: "toolkit", label: "Toolkit", hint: "What I work with" },
   { id: "contact", label: "Contact", hint: "How to reach me" },
+  { id: "philosophy", label: "Philosophy", hint: "How I work" },
 ] satisfies (TocItem & { hint: string })[];
 
 export default function Home() {
@@ -106,23 +106,6 @@ export default function Home() {
                 "AI reads messages and drafts the routine replies",
                 "People keep the negotiation and the final call",
               ]}
-            />
-          </Reveal>
-        </Section>
-
-        <Section id="philosophy" title="Philosophy">
-          <Reveal>
-            <p>
-              Skills can be learned and tools change every year. What doesn&apos;t change is how I work:
-              honestly, carefully, and with the people I build for in mind.
-            </p>
-          </Reveal>
-          <Reveal>
-            <PhilosophyModal
-              intro={philosophy.intro}
-              statement={philosophy.statement}
-              principles={philosophy.principles}
-              email={site.email}
             />
           </Reveal>
         </Section>
@@ -222,6 +205,23 @@ export default function Home() {
               ))}
             </Stagger>
           )}
+        </Section>
+
+        <Section id="philosophy" title="Philosophy">
+          <Reveal>
+            <p>
+              Skills can be learned and tools change every year. What doesn&apos;t change is how I work:
+              honestly, carefully, and with the people I build for in mind.
+            </p>
+          </Reveal>
+          <Reveal>
+            <PhilosophyModal
+              intro={philosophy.intro}
+              statement={philosophy.statement}
+              principles={philosophy.principles}
+              email={site.email}
+            />
+          </Reveal>
         </Section>
 
         <ConsoleWink />
