@@ -156,6 +156,8 @@ export function Chat({ t, lang, email }: { t: ChatCopy; lang: Locale; email: str
   const asked = useRef(false);
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  // The answer currently being "generated", so Stop can cut it short.
+  const stream = useRef<{ timer: number; interval: number; botId: number; shown: number } | null>(null);
 
   const busy = messages.some((m) => m.role === "assistant" && m.status !== "done");
 
@@ -177,9 +179,11 @@ export function Chat({ t, lang, email }: { t: ChatCopy; lang: Locale; email: str
         setMessages((ms) => ms.map((m) => (m.id === botId && m.role === "assistant" ? ({ ...m, ...fn(m) } as Message) : m)));
 
       // "Think" for a moment, then stream the answer a few words at a time.
-      window.setTimeout(() => {
+      stream.current = { timer: 0, interval: 0, botId, shown: 0 };
+      stream.current.timer = window.setTimeout(() => {
         if (reduce) {
           update(() => ({ status: "done", shown: total }));
+          stream.current = null;
           return;
         }
         update(() => ({ status: "streaming" }));
@@ -188,9 +192,14 @@ export function Chat({ t, lang, email }: { t: ChatCopy; lang: Locale; email: str
         const id = window.setInterval(() => {
           shown = Math.min(total, shown + 1 + Math.floor(Math.random() * 3));
           const done = shown >= total;
-          if (done) window.clearInterval(id);
+          if (stream.current) stream.current.shown = shown;
+          if (done) {
+            window.clearInterval(id);
+            stream.current = null;
+          }
           update(() => ({ shown, status: done ? "done" : "streaming" }));
         }, 45);
+        if (stream.current) stream.current.interval = id;
       }, reduce ? 0 : 900 + Math.random() * 600);
     },
     [t, reduce],
@@ -211,6 +220,32 @@ export function Chat({ t, lang, email }: { t: ChatCopy; lang: Locale; email: str
   useEffect(() => {
     if (messages.length) endRef.current?.scrollIntoView({ block: "end", behavior: reduce ? "auto" : "smooth" });
   }, [progress, messages.length, reduce]);
+
+  // Stop: freeze the answer where it is (or drop it if nothing was written yet).
+  const stop = () => {
+    const current = stream.current;
+    if (!current) return;
+    window.clearTimeout(current.timer);
+    window.clearInterval(current.interval);
+    stream.current = null;
+    setMessages((ms) =>
+      current.shown === 0
+        ? ms.filter((m) => m.id !== current.botId)
+        : ms.map((m) => (m.id === current.botId && m.role === "assistant" ? { ...m, status: "done" } : m)),
+    );
+    inputRef.current?.focus();
+  };
+
+  // Stop any stream when leaving the page.
+  useEffect(
+    () => () => {
+      if (stream.current) {
+        window.clearTimeout(stream.current.timer);
+        window.clearInterval(stream.current.interval);
+      }
+    },
+    [],
+  );
 
   const submit = () => {
     if (busy) return;
@@ -387,7 +422,7 @@ export function Chat({ t, lang, email }: { t: ChatCopy; lang: Locale; email: str
         </div>
       </main>
 
-      {/* The input dock: a pill pinned to the bottom, with a fade above it. */}
+      {/* The input dock: the composer pinned to the bottom, with a fade above it. */}
       <div className="chat-dock">
         <div className="chat-fade" aria-hidden="true" />
         <form
@@ -410,7 +445,8 @@ export function Chat({ t, lang, email }: { t: ChatCopy; lang: Locale; email: str
               <MailIcon /> <span className="chat-dotted">{t.emailMe}</span>
             </a>
           </p>
-          <div className="chat-input">
+          {/* Composer: the text grows on top, a toolbar with hints and the send button below. */}
+          <div className="composer">
             <textarea
               ref={inputRef}
               value={draft}
@@ -426,17 +462,49 @@ export function Chat({ t, lang, email }: { t: ChatCopy; lang: Locale; email: str
               }}
               autoFocus
             />
-            <motion.button
-              type="submit"
-              className="chat-send"
-              aria-label={t.send}
-              disabled={!draft.trim() || busy}
-              whileTap={{ scale: 0.9 }}
-            >
-              <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M8 13V3M4 7l4-4 4 4" />
-              </svg>
-            </motion.button>
+            <div className="composer-bar">
+              <span className="composer-hint" aria-hidden="true">
+                <kbd>↵</kbd> {t.toSend}
+                <span className="composer-sep">·</span>
+                <kbd>⇧</kbd>
+                <kbd>↵</kbd> {t.newLine}
+              </span>
+              <AnimatePresence mode="wait" initial={false}>
+                {busy ? (
+                  <motion.button
+                    key="stop"
+                    type="button"
+                    className="composer-send composer-ready"
+                    aria-label={t.stop}
+                    onClick={stop}
+                    initial={{ scale: 0.6, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.6, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 28 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <span className="composer-stop" aria-hidden="true" />
+                  </motion.button>
+                ) : (
+                  <motion.button
+                    key="send"
+                    type="submit"
+                    className={draft.trim() ? "composer-send composer-ready" : "composer-send"}
+                    aria-label={t.send}
+                    disabled={!draft.trim()}
+                    initial={{ scale: 0.6, opacity: 0 }}
+                    animate={{ scale: draft.trim() ? 1 : 0.92, opacity: 1 }}
+                    exit={{ scale: 0.6, opacity: 0 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 26 }}
+                    whileTap={{ scale: 0.88 }}
+                  >
+                    <svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M8 13V3M3.8 7.2 8 3l4.2 4.2" />
+                    </svg>
+                  </motion.button>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
         </form>
       </div>
