@@ -266,6 +266,18 @@
     .badge-hover { inset: 23px; }
   }
 
+  .ticker-cross { width: 0.5em; height: 0.72em; padding-inline: 0; margin-inline: 0.75em; transform: translateY(-0.04em); }
+
+  /* The footer wink: "S.D.G." unfolds into its meaning on hover or focus. */
+  .sdg { display: inline-flex; align-items: baseline; gap: 0.6em; cursor: default; letter-spacing: 0.08em; outline-offset: 4px; }
+  .sdg-reveal {
+    display: inline-block; max-width: 0; overflow: hidden; white-space: nowrap;
+    letter-spacing: 0; opacity: 0; filter: blur(4px);
+    transition: max-width 0.9s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease, filter 0.6s ease;
+  }
+  .sdg-reveal em { font-family: var(--font-serif); font-size: 1.2em; font-style: italic; color: var(--ink); }
+  .sdg:hover .sdg-reveal, .sdg:focus-visible .sdg-reveal { max-width: 32em; opacity: 1; filter: blur(0); }
+
   .table { width: 100%; border-collapse: collapse; }
   .table th, .table td { padding: 0.6em 1em 0.6em 0; border-top: 1px solid var(--rule); text-align: left; vertical-align: top; font-weight: 400; }
   .table tr:last-child th, .table tr:last-child td { border-bottom: 1px solid var(--rule); }

@@ -1,3 +1,4 @@
+import { ConsoleWink } from "@/components/console-wink";
 import { ContactDock } from "@/components/contact-dock";
 import { Hero } from "@/components/motion/hero";
 import { Reveal, ScrubText, Stagger, StaggerItem } from "@/components/motion/reveal";
@@ -26,7 +27,7 @@ export default function Home() {
         </p>
       </Hero>
 
-      <Ticker items={ticker} />
+      <Ticker items={ticker} crossAfter={3} />
 
       <Toc items={sections} />
 
@@ -152,7 +153,17 @@ export default function Home() {
           )}
         </Section>
 
-        <footer className="pb-32 text-dim">© {site.fullName}</footer>
+        <footer className="flex flex-wrap items-baseline gap-x-3 pb-32 text-dim">
+          <span>© {site.fullName}</span>
+          {/* Bach signed his scores "S.D.G.": Soli Deo Gloria. */}
+          <span className="sdg" tabIndex={0} aria-label="S.D.G., Soli Deo Gloria. In Christ I trust.">
+            <span aria-hidden="true">S.D.G.</span>
+            <span className="sdg-reveal" aria-hidden="true">
+              Soli Deo Gloria · <em>In Christ I trust</em>
+            </span>
+          </span>
+        </footer>
+        <ConsoleWink />
       </main>
 
       <ContactDock />
