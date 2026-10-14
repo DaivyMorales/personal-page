@@ -28,7 +28,7 @@ import type { TechIconSource } from "@/components/tech-icon";
 
 export const site = {
   name: "Daivy",
-  fullName: "Daivy Joao Morales Mora",
+  fullName: "Daivy Morales",
   tagline: "Product AI Engineer",
   // Used for canonical URLs, the sitemap and Open Graph images.
   url: "https://daivy.dev",

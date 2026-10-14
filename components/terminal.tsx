@@ -44,9 +44,12 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
   const [busy, setBusy] = useState(false);
   const [frame, setFrame] = useState(0);
   const [verb, setVerb] = useState(verbs[0]);
+  const [read, setRead] = useState(0);
   useEffect(() => {
     let idle = 0;
     const onScroll = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setRead(max > 0 ? Math.round((window.scrollY / max) * 100) : 0);
       setBusy((was) => {
         if (!was) setVerb(verbs[Math.floor(Math.random() * verbs.length)]);
         return true;
@@ -70,7 +73,7 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [cursor, setCursor] = useState(0);
-  const [echo, setEcho] = useState<string | null>(null);
+  const [echo, setEcho] = useState<{ text: string; mono?: boolean } | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const go = useCallback((id: string) => {
@@ -82,8 +85,17 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
       ...sections.map((s) => ({ name: s.id, hint: s.hint, run: () => go(s.id) })),
       { name: "email", hint: "Write to me", run: () => (window.location.href = `mailto:${email}`) },
       { name: "top", hint: "Back to the top", run: () => window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }) },
+      {
+        name: "help",
+        hint: "How to use this menu",
+        run: () =>
+          setEcho({
+            mono: true,
+            text: "/        open this menu\n↑ ↓      move up and down\nenter    go there\nesc      close",
+          }),
+      },
       // Not listed; for anyone who found the footer.
-      { name: "sdg", hint: "Soli Deo Gloria", hidden: true, run: () => setEcho("Soli Deo Gloria. In Christ I trust. ✝") },
+      { name: "sdg", hint: "Soli Deo Gloria", hidden: true, run: () => setEcho({ text: "Soli Deo Gloria. In Christ I trust. ✝" }) },
     ],
     [sections, email, go, reduce],
   );
@@ -98,9 +110,11 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
     setCursor(0);
   }, []);
 
+  // Commands that answer in the window keep it open; the rest close it first.
+  const answersInPlace = (c: Command) => c.name === "sdg" || c.name === "help";
   const runSelected = () => {
     if (!selected) return;
-    if (selected.name !== "sdg") close();
+    if (!answersInPlace(selected)) close();
     selected.run();
   };
 
@@ -133,6 +147,7 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
           {busy ? (reduce ? "✻" : spinner[frame]) : "●"}
         </span>
         <span>{busy ? `${verb}… ${where}` : where}</span>
+        <span className="statusline-read">· {read}% read</span>
         {!busy && <span className="statusline-hint">· press <kbd>/</kbd> for commands</span>}
       </button>
 
@@ -191,7 +206,7 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
                 />
               </label>
               {echo ? (
-                <p className="term-echo">{echo}</p>
+                <p className={echo.mono ? "term-echo term-echo-mono" : "term-echo"}>{echo.text}</p>
               ) : (
                 <ul id="term-list" role="listbox" className="term-list">
                   {matches.map((c) => (
@@ -202,7 +217,7 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
                       aria-selected={c === selected}
                       onMouseEnter={() => setCursor(matches.indexOf(c))}
                       onClick={() => {
-                        if (c.name !== "sdg") close();
+                        if (!answersInPlace(c)) close();
                         c.run();
                       }}
                     >

@@ -6,7 +6,9 @@ import { Stat } from "@/components/motion/stat";
 import { TypedPrompt } from "@/components/motion/typed-prompt";
 import { Section } from "@/components/section";
 import { techIcon } from "@/components/tech-icon";
+import { ContactPrompt } from "@/components/contact-prompt";
 import { Terminal } from "@/components/terminal";
+import { BeforeAfter, WelcomeBox } from "@/components/terminal-bits";
 import { Ticker } from "@/components/ticker";
 import { Toc, type TocItem } from "@/components/toc";
 import { education, experience, projects, site, ticker, toolkit } from "@/content/site";
@@ -24,7 +26,7 @@ export default function Home() {
   return (
     <div className="layout">
       <Hero name={site.name}>
-        <TypedPrompt prompt="daivy@mosquera ~ %" command="whoami">
+        <TypedPrompt prompt="daivy ~ %" command="whoami">
           <p className="m-0">
             {site.bio} <a href="#about">Read on</a>.
           </p>
@@ -37,6 +39,9 @@ export default function Home() {
 
       <main className="content">
         <Section id="about" title="About">
+          <Reveal>
+            <WelcomeBox name={site.name} />
+          </Reveal>
           <Reveal>
             <p>
               I&apos;m <strong>{site.fullName}</strong>, a {site.tagline} based in {site.location}. I build
@@ -58,6 +63,21 @@ export default function Home() {
             estimated lower cost than a comparable U.S. delivery model, for enterprise-level sourcing
             software at JOYC Brands. It gives the team back 30–40 hours a month.
           </Stat>
+          <Reveal>
+            <BeforeAfter
+              title="What changed for the sourcing team"
+              before={[
+                "Chasing suppliers across long email threads",
+                "Copying quotes into spreadsheets by hand",
+                "30–40 hours a month of follow-up",
+              ]}
+              after={[
+                "Suppliers, quotes and decisions in one place",
+                "AI reads messages and drafts the routine replies",
+                "People keep the negotiation and the final call",
+              ]}
+            />
+          </Reveal>
         </Section>
 
         <Section id="experience" title="Experience">
@@ -85,7 +105,7 @@ export default function Home() {
           <Reveal>
             <p>Things I&apos;ve designed and built end to end, from concept to a product people use.</p>
           </Reveal>
-          <Stagger className="bullets">
+          <Stagger className="bullets bullets-term">
             {projects.map((p) => (
               <StaggerItem key={p.name}>
                 <strong>
@@ -143,8 +163,11 @@ export default function Home() {
             <p>
               The best way to reach me is by email at{" "}
               <a href={`mailto:${site.email}`}>{site.email}</a>. I&apos;m happy to talk about AI products,
-              agentic systems and automation work.
+              agentic systems and automation work. Or just type below:
             </p>
+          </Reveal>
+          <Reveal>
+            <ContactPrompt email={site.email} />
           </Reveal>
           {site.social.length > 0 && (
             <Stagger className="bullets">

@@ -338,6 +338,65 @@
   .term-echo { margin: 0; padding: 18px 16px; font-family: var(--font-serif); font-size: 1.5em; font-style: italic; }
   .term-foot { margin: 0; padding: 8px 14px; border-top: 1px solid var(--rule); font-size: 11px; color: var(--dim); }
 
+  .statusline-read { font-variant-numeric: tabular-nums; }
+  .term-echo-mono { font-family: var(--font-mono); font-style: normal; font-size: 13px; line-height: 1.7; white-space: pre; }
+
+  /* Claude Code's start-up banner. */
+  .welcome {
+    padding: 0.9em 1.1em;
+    border: 1px solid var(--rule); border-radius: 8px;
+    font-size: 0.9em;
+  }
+  .content .welcome p { margin: 0; }
+  .content .welcome p + p { margin-top: 0.35em; }
+  .welcome-title { margin-bottom: 0.6em !important; }
+  .welcome-star { display: inline-block; margin-right: 0.35em; }
+  .welcome-dim { color: var(--dim); }
+  .welcome kbd, .cprompt kbd { padding: 0 0.3em; border: 1px solid var(--rule); border-radius: 3px; font: inherit; }
+
+  /* Before / After box. */
+  .ba { margin: var(--space) 0; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; font-size: 0.85em; }
+  .ba-title { padding: 0.55em 0.9em; border-bottom: 1px solid var(--rule); }
+  .ba-cols { display: grid; grid-template-columns: 1fr 1fr; }
+  .ba-col { padding: 0.7em 0.9em 0.8em; }
+  .ba-before { border-right: 1px solid var(--rule); color: var(--dim); }
+  .ba-after { background: rgb(126 126 126 / 0.08); }
+  .content .ba-label { margin: 0 0 0.4em; font-size: 0.8em; letter-spacing: 0.08em; text-transform: uppercase; }
+  .content .ba ul { list-style: none; margin: 0; padding: 0; }
+  .ba li { position: relative; padding-left: 1.2em; }
+  .ba li + li { margin-top: 0.35em; }
+  .ba-before li::before { content: "×"; position: absolute; left: 0; }
+  .ba-after li::before { content: "✓"; position: absolute; left: 0; }
+  @media (max-width: 600px) {
+    .ba-cols { grid-template-columns: 1fr; }
+    .ba-before { border-right: 0; border-bottom: 1px solid var(--rule); }
+  }
+
+  /* Projects use the ⏺ marker of terminal apps instead of round dots. */
+  .bullets-term > li::before {
+    content: "⏺"; width: auto; height: auto; top: 0; left: 0.35em;
+    background: none; border-radius: 0; font-size: 0.8em;
+  }
+
+  /* Claude Code-style message box. */
+  .cprompt { margin: var(--space) 0; }
+  .cprompt-box {
+    display: flex; gap: 0.7em; align-items: flex-start;
+    padding: 0.75em 0.9em;
+    border: 1px solid var(--rule); border-radius: 8px;
+    transition: border-color 0.2s ease;
+  }
+  .cprompt-box:focus-within { border-color: var(--ink); }
+  .cprompt-caret { line-height: 1.4; }
+  .cprompt textarea {
+    flex: 1; min-width: 0; resize: none; field-sizing: content; min-height: 1.4em; max-height: 12em;
+    border: 0; outline: none; background: transparent; color: inherit; font: inherit; line-height: 1.4;
+  }
+  .cprompt textarea::placeholder { color: var(--dim); }
+  .content .cprompt-foot { display: flex; justify-content: space-between; gap: 1em; margin: 0.5em 0.2em 0; font-size: 0.75em; color: var(--dim); }
+  .cprompt-foot button { border: 0; background: none; color: var(--ink); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 0.3em; }
+  .cprompt-foot button:disabled { color: var(--dim); text-decoration: none; cursor: default; }
+
   .table { width: 100%; border-collapse: collapse; }
   .table th, .table td { padding: 0.6em 1em 0.6em 0; border-top: 1px solid var(--rule); text-align: left; vertical-align: top; font-weight: 400; }
   .table tr:last-child th, .table tr:last-child td { border-bottom: 1px solid var(--rule); }
