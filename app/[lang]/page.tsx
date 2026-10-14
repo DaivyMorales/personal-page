@@ -5,6 +5,7 @@ import portrait from "@/assets/daivy.jpg";
 import { AskBar } from "@/components/ask-bar";
 import { ConsoleWink } from "@/components/console-wink";
 import { LangSwitch } from "@/components/lang-switch";
+import { Blueprint } from "@/components/motion/blueprint";
 import { Hero } from "@/components/motion/hero";
 import { Reveal, ScrubText, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { Stat } from "@/components/motion/stat";
@@ -33,6 +34,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 
   return (
     <div className="layout">
+      <Blueprint />
       <LangSwitch lang={lang} label={t.langSwitch} />
 
       <Hero name={site.name}>
