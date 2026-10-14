@@ -1,19 +1,5 @@
 /** Small pieces with the look of a terminal app, written in plain words. */
 
-/** A bordered welcome box, in the style of a terminal app's start-up screen. */
-export function WelcomeBox({ title, hintBefore, hintAfter }: { title: string; hintBefore: string; hintAfter: string }) {
-  return (
-    <div className="welcome" role="note">
-      <p className="welcome-title">
-        <span className="welcome-star" aria-hidden="true">✻</span> {title}
-      </p>
-      <p className="welcome-dim">
-        {hintBefore} <kbd>/</kbd> {hintAfter}
-      </p>
-    </div>
-  );
-}
-
 /** A two-part box showing how things worked before and after. */
 export function BeforeAfter({
   title,

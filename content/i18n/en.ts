@@ -22,11 +22,6 @@ export const en = {
     contact: { label: "Contact", hint: "How to reach me" },
     philosophy: { label: "Philosophy", hint: "How I work" },
   },
-  welcome: {
-    title: "Hi, I'm Daivy. Welcome!",
-    hintBefore: "Scroll to explore, or press",
-    hintAfter: "to jump to any section.",
-  },
   about: {
     intro:
       "I'm **Daivy Morales**, a Product AI Engineer based in Mosquera, Colombia. I build production-oriented agentic systems and workflow automation, and I like the whole arc of a product: from the first idea, through the architecture, to a beta people actually use.",

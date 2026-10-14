@@ -16,7 +16,7 @@ import { Section } from "@/components/section";
 import { SiteFooter } from "@/components/site-footer";
 import { techIcon } from "@/components/tech-icon";
 import { Terminal } from "@/components/terminal";
-import { BeforeAfter, WelcomeBox } from "@/components/terminal-bits";
+import { BeforeAfter } from "@/components/terminal-bits";
 import { Ticker } from "@/components/ticker";
 import { Toc } from "@/components/toc";
 import { getDictionary, hasLocale } from "@/content/i18n";
@@ -51,9 +51,6 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
 
       <main className="content">
         <Section id="about" title={t.sections.about.label}>
-          <Reveal>
-            <WelcomeBox {...t.welcome} />
-          </Reveal>
           <Reveal>
             <p>
               <Rich text={t.about.intro} />

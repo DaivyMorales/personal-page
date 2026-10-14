@@ -24,11 +24,6 @@ export const es: Dictionary = {
     contact: { label: "Contacto", hint: "Cómo escribirme" },
     philosophy: { label: "Filosofía", hint: "Cómo trabajo" },
   },
-  welcome: {
-    title: "Hola, soy Daivy. ¡Bienvenido!",
-    hintBefore: "Desliza para explorar, o presiona",
-    hintAfter: "para ir a cualquier sección.",
-  },
   about: {
     intro:
       "Soy **Daivy Morales**, Ingeniero de IA de Producto en Mosquera, Colombia. Construyo sistemas agénticos listos para producción y automatización de flujos de trabajo, y me gusta todo el recorrido de un producto: desde la primera idea, pasando por la arquitectura, hasta una beta que la gente de verdad usa.",

@@ -310,18 +310,6 @@
   .statusline-read { font-variant-numeric: tabular-nums; }
   .term-echo-mono { font-family: var(--font-mono); font-style: normal; font-size: 13px; line-height: 1.7; white-space: pre; }
 
-  /* Claude Code's start-up banner. */
-  .welcome {
-    padding: 0.9em 1.1em;
-    border: 1px solid var(--rule); border-radius: 8px;
-    font-size: 0.9em;
-  }
-  .content .welcome p { margin: 0; }
-  .content .welcome p + p { margin-top: 0.35em; }
-  .welcome-title { margin-bottom: 0.6em !important; }
-  .welcome-star { display: inline-block; margin-right: 0.35em; }
-  .welcome-dim { color: var(--dim); }
-  .welcome kbd { padding: 0 0.3em; border: 1px solid var(--rule); border-radius: 3px; font: inherit; }
 
   /* Before / After box. */
   .ba { margin: var(--space) 0; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; font-size: 0.85em; }
