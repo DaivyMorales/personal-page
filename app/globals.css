@@ -588,7 +588,7 @@
 
   /* ---- Chat page, after america.gov's ---- */
   .chat { --bubble: color-mix(in oklab, var(--ink) 6%, var(--ground)); min-height: 100vh; }
-  .chat-top { position: fixed; top: 0; left: 0; z-index: 30; padding: 0.85em 1.7em; font-size: 0.8em; }
+  .chat-top { position: fixed; top: 0; left: 0; z-index: 30; display: flex; gap: 1.4em; align-items: baseline; padding: 0.85em 1.7em; font-size: 0.8em; }
   .chat-main { max-width: 720px; margin: 0 auto; padding: 5em 1.25em 240px; }
   .chat-empty {
     min-height: calc(100vh - 330px);
@@ -610,8 +610,6 @@
     padding: 1rem 1.25rem; border-radius: 32px;
     background: var(--bubble); white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.95em;
   }
-  .chat-bot-name { display: flex; align-items: center; gap: 0.55em; margin: 0 0 0.7em; font-size: 0.75em; color: var(--dim); }
-  .chat-bot-photo { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
   .chat-answer { line-height: 1.65; }
   .chat-answer p { margin: 0 0 0.9em; }
   .chat-answer > :last-child { margin-bottom: 0; display: inline; }
@@ -637,9 +635,18 @@
     color: var(--ink); font-size: 0.78em; text-decoration: none; transition: border-color 0.2s ease;
   }
   .chat-source:hover { border-color: var(--ink); }
-  .chat-copy, .chat-new { border: 0; background: none; color: var(--dim); font: inherit; font-size: 0.75em; cursor: pointer; transition: color 0.2s ease; }
-  .chat-copy { margin-left: auto; }
-  .chat-copy:hover, .chat-new:hover { color: var(--ink); }
+  .chat-new { padding: 0; border: 0; background: none; color: var(--dim); font: inherit; cursor: pointer; transition: color 0.2s ease; }
+  .chat-new:hover { color: var(--ink); }
+  /* Feedback and copy pills under each answer. */
+  .chat-actions { display: flex; gap: 8px; margin-top: 1em; }
+  .chat-action-group { display: inline-flex; border-radius: 999px; background: var(--bubble); }
+  .chat-action {
+    display: grid; place-items: center; width: 34px; height: 34px; padding: 0;
+    border: 0; border-radius: 999px; background: transparent; color: var(--dim); cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+  .chat-action:hover, .chat-action[aria-pressed="true"] { color: var(--ink); }
+  .chat-action-solo { background: var(--bubble); }
   .chat-dock {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
     display: flex; justify-content: center;
@@ -650,9 +657,11 @@
   .chat-fade { position: absolute; inset: -90px 0 0; background: linear-gradient(transparent, var(--ground) 55%); }
   .chat-form { position: relative; width: min(676px, 100%); pointer-events: auto; transition: width 0.25s ease; }
   .chat-form:focus-within, .chat-form:hover { width: min(684px, 100%); }
-  .chat-notice { display: flex; justify-content: center; align-items: center; gap: 1em; flex-wrap: wrap; margin: 0 0 0.7em; font-size: 0.72em; color: var(--dim); text-align: center; }
-  .chat-notice a { color: inherit; }
-  .chat-notice .chat-new { font-size: 1em; color: var(--ink); }
+  .chat-notice { display: flex; justify-content: center; align-items: center; gap: 0.6em; flex-wrap: wrap; margin: 0 0 2.6em; font-size: 0.7em; color: var(--dim); text-align: center; }
+  .chat-notice-item { display: inline-flex; align-items: center; gap: 0.4em; color: inherit; text-decoration: none; }
+  .chat-dotted { text-decoration: underline dotted; text-underline-offset: 0.3em; }
+  a.chat-notice-item:hover, .chat-notice-item[title]:hover { color: var(--ink); cursor: help; }
+  a.chat-notice-item:hover { cursor: pointer; }
   .chat-input {
     display: flex; align-items: flex-end; gap: 0.6em;
     padding: 0.5em 0.5em 0.5em 1.4em;

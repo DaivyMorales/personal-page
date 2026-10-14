@@ -80,6 +80,55 @@ function Formatted({ text }: { text: string }) {
   );
 }
 
+const icon = { width: 15, height: 15, viewBox: "0 0 16 16", fill: "none", stroke: "currentColor", strokeWidth: 1.4, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": true } as const;
+
+function Thumb({ down = false, filled = false }: { down?: boolean; filled?: boolean }) {
+  return (
+    <svg {...icon} style={down ? { transform: "rotate(180deg)" } : undefined}>
+      <path d="M5 7v6.5H2.5V7H5Zm0 0 2.6-4.6c.5-.9 1.9-.6 1.9.5v2.8h3.1c.9 0 1.6.9 1.4 1.8l-1 4.6c-.2.8-.8 1.3-1.6 1.3H5" fill={filled ? "currentColor" : "none"} />
+    </svg>
+  );
+}
+function CopyIcon() {
+  return (
+    <svg {...icon}>
+      <rect x="5.5" y="5.5" width="8" height="8" rx="2" />
+      <path d="M10.5 3.5v-.5A1.5 1.5 0 0 0 9 1.5H4A1.5 1.5 0 0 0 2.5 3v5A1.5 1.5 0 0 0 4 9.5h.5" />
+    </svg>
+  );
+}
+function Check() {
+  return (
+    <svg {...icon}>
+      <path d="M3.5 8.5 6.5 11.5 12.5 4.5" />
+    </svg>
+  );
+}
+function LockIcon() {
+  return (
+    <svg {...icon} width={12} height={12}>
+      <rect x="3" y="7" width="10" height="7" rx="1.5" />
+      <path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" />
+    </svg>
+  );
+}
+function InfoIcon() {
+  return (
+    <svg {...icon} width={12} height={12}>
+      <circle cx="8" cy="8" r="6" />
+      <path d="M8 7.5v3.5M8 5.2v.1" />
+    </svg>
+  );
+}
+function MailIcon() {
+  return (
+    <svg {...icon} width={12} height={12}>
+      <rect x="1.5" y="3" width="13" height="10" rx="1.5" />
+      <path d="m2 4 6 4.5L14 4" />
+    </svg>
+  );
+}
+
 function Thinking({ label }: { label: string }) {
   const reduce = useReducedMotion();
   const [frame, setFrame] = useState(0);
@@ -102,6 +151,7 @@ export function Chat({ t, lang, email }: { t: ChatCopy; lang: Locale; email: str
   const [messages, setMessages] = useState<Message[]>([]);
   const [draft, setDraft] = useState("");
   const [copied, setCopied] = useState<number | null>(null);
+  const [rating, setRating] = useState<Record<number, "up" | "down">>({});
   const nextId = useRef(0);
   const asked = useRef(false);
   const endRef = useRef<HTMLDivElement>(null);
@@ -178,6 +228,19 @@ export function Chat({ t, lang, email }: { t: ChatCopy; lang: Locale; email: str
           <span aria-hidden="true">← </span>
           {t.back}
         </Link>
+        {messages.length > 0 && !busy && (
+          <button
+            type="button"
+            className="chat-new"
+            onClick={() => {
+              setMessages([]);
+              setRating({});
+              inputRef.current?.focus();
+            }}
+          >
+            + {t.newChat}
+          </button>
+        )}
       </header>
 
       <main className="chat-main" aria-live="polite">
@@ -235,10 +298,6 @@ export function Chat({ t, lang, email }: { t: ChatCopy; lang: Locale; email: str
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, ease }}
               >
-                <p className="chat-bot-name">
-                  <Image src={portrait} alt="" width={22} height={22} sizes="22px" className="chat-bot-photo" />
-                  {t.assistant}
-                </p>
                 {m.status === "thinking" ? (
                   <Thinking label={t.thinking} />
                 ) : (
@@ -264,16 +323,41 @@ export function Chat({ t, lang, email }: { t: ChatCopy; lang: Locale; email: str
                           </Link>
                         </motion.span>
                       ))}
+                    </div>
+                    {/* Feedback and copy, as on america.gov. */}
+                    <div className="chat-actions">
+                      <span className="chat-action-group">
+                        {(["up", "down"] as const).map((v) => (
+                          <button
+                            key={v}
+                            type="button"
+                            className="chat-action"
+                            aria-label={v === "up" ? t.good : t.bad}
+                            aria-pressed={rating[m.id] === v}
+                            onClick={() =>
+                              setRating((r) => {
+                                const next = { ...r };
+                                if (r[m.id] === v) delete next[m.id];
+                                else next[m.id] = v;
+                                return next;
+                              })
+                            }
+                          >
+                            <Thumb down={v === "down"} filled={rating[m.id] === v} />
+                          </button>
+                        ))}
+                      </span>
                       <button
                         type="button"
-                        className="chat-copy"
+                        className="chat-action chat-action-solo"
+                        aria-label={copied === m.id ? t.copied : t.copy}
                         onClick={() => {
                           navigator.clipboard?.writeText(m.answer.answer.replace(/\*\*/g, ""));
                           setCopied(m.id);
                           window.setTimeout(() => setCopied((c) => (c === m.id ? null : c)), 1600);
                         }}
                       >
-                        {copied === m.id ? `✓ ${t.copied}` : t.copy}
+                        {copied === m.id ? <Check /> : <CopyIcon />}
                       </button>
                     </div>
                     {m.id === last?.id && (
@@ -314,21 +398,17 @@ export function Chat({ t, lang, email }: { t: ChatCopy; lang: Locale; email: str
           }}
         >
           <p className="chat-notice">
-            {messages.length > 0 && !busy && (
-              <button
-                type="button"
-                className="chat-new"
-                onClick={() => {
-                  setMessages([]);
-                  inputRef.current?.focus();
-                }}
-              >
-                + {t.newChat}
-              </button>
-            )}
-            <span>
-              {t.disclaimer} <a href={`mailto:${email}`}>{t.disclaimerLink}</a>
+            <span className="chat-notice-item">
+              <LockIcon /> <span className="chat-dotted">{t.privacy}</span>
             </span>
+            <span aria-hidden="true">·</span>
+            <span className="chat-notice-item" title={t.sampleHint}>
+              <InfoIcon /> <span className="chat-dotted">{t.sample}</span>
+            </span>
+            <span aria-hidden="true">·</span>
+            <a className="chat-notice-item" href={`mailto:${email}`}>
+              <MailIcon /> <span className="chat-dotted">{t.emailMe}</span>
+            </a>
           </p>
           <div className="chat-input">
             <textarea
