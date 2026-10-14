@@ -394,28 +394,6 @@
   /* Keep the status line clear of the bar. */
   .statusline { bottom: 1.6em; }
 
-  /* Highlights: rounded figure cards beside short headlines. */
-  .hl { display: grid; gap: calc(var(--space) * 1.4); margin-top: var(--space); }
-  .hl-row { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 1.6em; align-items: center; }
-  .hl-card {
-    position: relative; aspect-ratio: 1; display: grid; place-content: center; justify-items: center;
-    border-radius: 28px;
-    background: radial-gradient(120% 90% at 30% 15%, rgb(126 126 126 / 0.06), rgb(126 126 126 / 0.16));
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.5), 0 20px 40px -28px rgb(0 0 0 / 0.4);
-    overflow: hidden;
-  }
-  .hl-figure { font-family: var(--font-serif); font-size: clamp(4em, 9vw, 6.5em); line-height: 0.9; letter-spacing: -0.03em; }
-  .hl-caption { margin-top: 0.5em; font-size: 0.75em; color: var(--dim); }
-  .hl-title { margin: 0; font-family: var(--font-serif); font-weight: 400; font-size: 1.7em; line-height: 1.05; letter-spacing: -0.01em; }
-  .content .hl-text { margin: 0.6em 0 0.8em; color: var(--dim); font-size: 0.9em; }
-  .hl-link { font-size: 0.85em; color: var(--ink); text-decoration: none; font-weight: 600; }
-  .hl-link span { display: inline-block; transition: transform 0.25s ease; }
-  .hl-link:hover span { transform: translateX(3px); }
-  @media (max-width: 600px) {
-    .hl-row { grid-template-columns: 1fr; gap: 1em; }
-    .hl-card { aspect-ratio: 16 / 10; }
-  }
-
   .table { width: 100%; border-collapse: collapse; }
   .table th, .table td { padding: 0.6em 1em 0.6em 0; border-top: 1px solid var(--rule); text-align: left; vertical-align: top; font-weight: 400; }
   .table tr:last-child th, .table tr:last-child td { border-bottom: 1px solid var(--rule); }

@@ -3,7 +3,6 @@ import { siClaude, siLanggraph, siN8n } from "simple-icons";
 import portrait from "@/assets/daivy.jpg";
 import { AskBar } from "@/components/ask-bar";
 import { ConsoleWink } from "@/components/console-wink";
-import { Highlights } from "@/components/highlights";
 import { Hero } from "@/components/motion/hero";
 import { Reveal, ScrubText, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { Stat } from "@/components/motion/stat";
@@ -14,11 +13,10 @@ import { Terminal } from "@/components/terminal";
 import { BeforeAfter, WelcomeBox } from "@/components/terminal-bits";
 import { Ticker } from "@/components/ticker";
 import { Toc, type TocItem } from "@/components/toc";
-import { askExamples, education, experience, highlights, projects, site, ticker, toolkit } from "@/content/site";
+import { askExamples, education, experience, projects, site, ticker, toolkit } from "@/content/site";
 
 const sections = [
   { id: "about", label: "About", hint: "Who I am" },
-  { id: "highlights", label: "Highlights", hint: "A few wins" },
   { id: "experience", label: "Experience", hint: "Where I've worked" },
   { id: "projects", label: "Projects", hint: "Things I've built" },
   { id: "education", label: "Education", hint: "Where I studied" },
@@ -107,10 +105,6 @@ export default function Home() {
               ]}
             />
           </Reveal>
-        </Section>
-
-        <Section id="highlights" title="Highlights">
-          <Highlights items={highlights} />
         </Section>
 
         <Section id="experience" title="Experience">
