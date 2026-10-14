@@ -196,6 +196,30 @@
   .content .role p:not(.role-meta) { margin: calc(var(--space) * 0.6) 0; }
   .content .role .bullets { margin-top: calc(var(--space) * 0.6); }
 
+  /* Toolkit: a row of chips per area, each with the technology's icon. */
+  .tech-group + .tech-group { margin-top: calc(var(--space) * 0.9); }
+  .tech-area { margin: 0 0 0.6em; font-weight: 600; font-size: 0.85em; color: var(--link); }
+  .content .tech-list { display: flex; flex-wrap: wrap; gap: 0.5em; margin: 0; padding: 0; list-style: none; }
+  .tech-chip {
+    display: inline-flex; align-items: center; gap: 0.5em;
+    padding: 0.35em 0.75em 0.35em 0.55em;
+    border: 1px solid var(--rule); border-radius: 999px;
+    font-size: 0.85em; line-height: 1.2;
+    background: color-mix(in oklab, var(--sabio) 9%, transparent);
+    transition: border-color 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
+  }
+  .tech-icon { display: inline-grid; place-items: center; width: 1.15em; height: 1.15em; color: var(--ink); transition: color 0.25s ease; }
+  .tech-icon svg { width: 100%; height: 100%; }
+  .tech-monogram {
+    font-family: var(--font-mono); font-weight: 600; font-size: 0.62em; letter-spacing: -0.02em;
+    line-height: 1; white-space: nowrap;
+  }
+  .tech-chip:hover { border-color: var(--link); transform: translateY(-1px); }
+  .tech-chip:hover .tech-icon { color: var(--brand, var(--link)); }
+  @media (prefers-color-scheme: dark) {
+    .tech-chip[data-dark-brand]:hover .tech-icon { color: var(--ink); }
+  }
+
   .table { width: 100%; border-collapse: collapse; }
   .table th, .table td { padding: 0.6em 1em 0.6em 0; border-top: 1px solid var(--rule); text-align: left; vertical-align: top; font-weight: 400; }
   .table tr:last-child th, .table tr:last-child td { border-bottom: 1px solid var(--rule); }

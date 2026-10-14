@@ -55,10 +55,22 @@ export function Stagger({ as = "ul", className, children }: { as?: keyof typeof 
   );
 }
 
-export function StaggerItem({ as = "li", className, children }: { as?: keyof typeof items; className?: string; children: React.ReactNode }) {
+export function StaggerItem({
+  as = "li",
+  className,
+  style,
+  children,
+  ...data
+}: {
+  as?: keyof typeof items;
+  className?: string;
+  style?: React.CSSProperties;
+  children: React.ReactNode;
+  [dataAttr: `data-${string}`]: string | boolean | undefined;
+}) {
   const Tag = items[as];
   return (
-    <Tag className={className} variants={item}>
+    <Tag className={className} style={style} variants={item} {...data}>
       {children}
     </Tag>
   );

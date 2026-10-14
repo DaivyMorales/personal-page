@@ -2,6 +2,7 @@ import { ContactDock } from "@/components/contact-dock";
 import { Hero } from "@/components/motion/hero";
 import { Reveal, ScrubText, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { Section } from "@/components/section";
+import { techIcon } from "@/components/tech-icon";
 import { Toc, type TocItem } from "@/components/toc";
 import { education, experience, projects, site, toolkit } from "@/content/site";
 
@@ -102,13 +103,27 @@ export default function Home() {
         </Section>
 
         <Section id="toolkit" title="Toolkit">
-          <Stagger className="bullets">
-            {toolkit.map(({ area, items }) => (
-              <StaggerItem key={area}>
-                <strong>{area}:</strong> {items}
-              </StaggerItem>
-            ))}
-          </Stagger>
+          {toolkit.map(({ area, items }) => (
+            <div key={area} className="tech-group">
+              <h3 className="tech-area">{area}</h3>
+              <Stagger className="tech-list">
+                {items.map(({ name, icon }) => {
+                  const { svg, brand, darkBrand } = techIcon(icon);
+                  return (
+                    <StaggerItem
+                      key={name}
+                      className="tech-chip"
+                      style={brand ? ({ "--brand": brand } as React.CSSProperties) : undefined}
+                      data-dark-brand={darkBrand || undefined}
+                    >
+                      <span className="tech-icon">{svg}</span>
+                      {name}
+                    </StaggerItem>
+                  );
+                })}
+              </Stagger>
+            </div>
+          ))}
         </Section>
 
         <Section id="contact" title="Contact">
