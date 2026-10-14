@@ -4,13 +4,15 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import portrait from "@/assets/daivy.jpg";
+import type { Dictionary } from "@/content/i18n/en";
 
 /**
  * A pill-shaped "Ask me anything…" box that floats at the bottom of the screen, like
  * america.gov's. Typing a message and pressing Enter opens an email to Daivy with it filled in.
  * While empty, it cycles through example questions.
  */
-export function AskBar({ email, name, examples }: { email: string; name: string; examples: string[] }) {
+export function AskBar({ email, t }: { email: string; t: Dictionary["ask"] }) {
+  const examples = t.examples;
   const reduce = useReducedMotion();
   const [message, setMessage] = useState("");
   const [focused, setFocused] = useState(false);
@@ -24,7 +26,7 @@ export function AskBar({ email, name, examples }: { email: string; name: string;
 
   const send = () => {
     const body = message.trim() || examples[index];
-    window.location.href = `mailto:${email}?subject=${encodeURIComponent("Hello from your site")}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:${email}?subject=${encodeURIComponent(t.subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
@@ -40,7 +42,7 @@ export function AskBar({ email, name, examples }: { email: string; name: string;
     >
       <Image src={portrait} alt="" width={40} height={40} sizes="40px" placeholder="blur" className="askbar-photo" />
       <label className="askbar-field">
-        <span className="sr-only">Message to {name}</span>
+        <span className="sr-only">{t.messageLabel}</span>
         <input
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -58,7 +60,7 @@ export function AskBar({ email, name, examples }: { email: string; name: string;
                 exit={{ y: "-70%", opacity: 0, filter: "blur(4px)" }}
                 transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               >
-                {focused ? `Ask ${name} anything…` : `Try “${examples[index]}”`}
+                {focused ? t.askAnything : `${t.try} “${examples[index]}”`}
               </motion.span>
             </AnimatePresence>
           </span>
@@ -67,7 +69,7 @@ export function AskBar({ email, name, examples }: { email: string; name: string;
       <motion.button
         type="submit"
         className="askbar-send"
-        aria-label="Send by email"
+        aria-label={t.send}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.92 }}
       >

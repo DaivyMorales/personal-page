@@ -1,70 +1,73 @@
 import Image from "next/image";
+import { notFound } from "next/navigation";
 import { siClaude, siLanggraph, siN8n } from "simple-icons";
 import portrait from "@/assets/daivy.jpg";
 import { AskBar } from "@/components/ask-bar";
 import { ConsoleWink } from "@/components/console-wink";
+import { LangSwitch } from "@/components/lang-switch";
 import { Hero } from "@/components/motion/hero";
 import { Reveal, ScrubText, Stagger, StaggerItem } from "@/components/motion/reveal";
 import { Stat } from "@/components/motion/stat";
 import { TypedPrompt } from "@/components/motion/typed-prompt";
 import { PhilosophyModal } from "@/components/philosophy-modal";
+import { Rich } from "@/components/rich";
 import { Section } from "@/components/section";
 import { SiteFooter } from "@/components/site-footer";
 import { techIcon } from "@/components/tech-icon";
 import { Terminal } from "@/components/terminal";
 import { BeforeAfter, WelcomeBox } from "@/components/terminal-bits";
 import { Ticker } from "@/components/ticker";
-import { Toc, type TocItem } from "@/components/toc";
-import { askExamples, education, experience, philosophy, projects, site, ticker, toolkit } from "@/content/site";
+import { Toc } from "@/components/toc";
+import { getDictionary, hasLocale } from "@/content/i18n";
+import { site, toolkit } from "@/content/site";
 
-const sections = [
-  { id: "about", label: "About", hint: "Who I am" },
-  { id: "experience", label: "Experience", hint: "Where I've worked" },
-  { id: "projects", label: "Projects", hint: "Things I've built" },
-  { id: "education", label: "Education", hint: "Where I studied" },
-  { id: "toolkit", label: "Toolkit", hint: "What I work with" },
-  { id: "contact", label: "Contact", hint: "How to reach me" },
-  { id: "philosophy", label: "Philosophy", hint: "How I work" },
-] satisfies (TocItem & { hint: string })[];
+const order = ["about", "experience", "projects", "education", "toolkit", "contact", "philosophy"] as const;
 
-export default function Home() {
+export default async function Home({ params }: PageProps<"/[lang]">) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+  const t = getDictionary(lang);
+
+  const sections = order.map((id) => ({ id, ...t.sections[id] }));
+  const sdgAnswer = `Soli Deo Gloria. ${t.sdg.trust}. ✝`;
+
   return (
     <div className="layout">
+      <LangSwitch lang={lang} label={t.langSwitch} />
+
       <Hero name={site.name}>
         <TypedPrompt prompt="daivy ~ %" command="whoami">
           <p className="m-0">
-            {site.bio} <a href="#about">Read on</a>.
+            {t.hero.bio} <a href="#about">{t.hero.readOn}</a>.
           </p>
         </TypedPrompt>
       </Hero>
 
-      <Ticker items={ticker} crossAfter={3} />
+      <Ticker items={t.ticker} crossAfter={3} />
 
-      <Toc items={sections} />
+      <Toc items={sections} labels={t.toc} />
 
       <main className="content">
-        <Section id="about" title="About">
+        <Section id="about" title={t.sections.about.label}>
           <Reveal>
-            <WelcomeBox name={site.name} />
+            <WelcomeBox {...t.welcome} />
           </Reveal>
           <Reveal>
             <p>
-              I&apos;m <strong>{site.fullName}</strong>, a {site.tagline} based in {site.location}. I build
-              production-oriented agentic systems and workflow automation, and I like the whole arc of a
-              product: from the first idea, through the architecture, to a beta people actually use.
+              <Rich text={t.about.intro} />
             </p>
           </Reveal>
           <blockquote className="pull">
             <ScrubText
-              text="I turn unstructured business processes into measurable operational capacity."
+              text={t.about.quote.text}
               parts={[
-                "I",
+                t.about.quote.lead,
                 {
                   inline: (
                     <Image src={portrait} alt="" width={64} height={64} sizes="64px" className="inline-pic inline-photo" />
                   ),
                 },
-                "turn unstructured business processes",
+                t.about.quote.middle,
                 {
                   inline: (
                     <span className="inline-stack">
@@ -78,44 +81,30 @@ export default function Home() {
                     </span>
                   ),
                 },
-                "into measurable operational capacity.",
+                t.about.quote.end,
               ]}
             />
-            <cite>What I do, in one line</cite>
+            <cite>{t.about.quote.cite}</cite>
           </blockquote>
           <Reveal>
             <p>
-              Right now I&apos;m the sole AI engineer at <strong>JOYC Brands</strong>, where I built the
-              company&apos;s sourcing operating system <em>from idea to beta</em>.
+              <Rich text={t.about.now} />
             </p>
           </Reveal>
           <Stat from={97} to={99} suffix="%">
-            estimated lower cost than a comparable U.S. delivery model, for enterprise-level sourcing
-            software at JOYC Brands. It gives the team back 30–40 hours a month.
+            {t.about.stat}
           </Stat>
           <Reveal>
-            <BeforeAfter
-              title="What changed for the sourcing team"
-              before={[
-                "Chasing suppliers across long email threads",
-                "Copying quotes into spreadsheets by hand",
-                "30–40 hours a month of follow-up",
-              ]}
-              after={[
-                "Suppliers, quotes and decisions in one place",
-                "AI reads messages and drafts the routine replies",
-                "People keep the negotiation and the final call",
-              ]}
-            />
+            <BeforeAfter {...t.about.beforeAfter} />
           </Reveal>
         </Section>
 
-        <Section id="experience" title="Experience">
-          {experience.map((role) => (
+        <Section id="experience" title={t.sections.experience.label}>
+          {t.experience.roles.map((role) => (
             <article key={role.company} className="role">
               <Reveal>
                 <h3 className="role-title">
-                  {role.title} <span className="role-at">at</span> {role.company}
+                  {role.title} <span className="role-at">{t.experience.at}</span> {role.company}
                 </h3>
                 <p className="role-meta">
                   {role.period} · {role.place}
@@ -131,16 +120,18 @@ export default function Home() {
           ))}
         </Section>
 
-        <Section id="projects" title="Projects">
+        <Section id="projects" title={t.sections.projects.label}>
           <Reveal>
-            <p>Things I&apos;ve designed and built end to end, from concept to a product people use.</p>
+            <p>{t.projects.intro}</p>
           </Reveal>
           <Stagger className="bullets bullets-term">
-            {projects.map((p) => (
+            {t.projects.items.map((p) => (
               <StaggerItem key={p.name}>
                 <strong>
                   {p.href ? (
-                    <a href={p.href} target="_blank" rel="noopener noreferrer">{p.name}</a>
+                    <a href={p.href} target="_blank" rel="noopener noreferrer">
+                      {p.name}
+                    </a>
                   ) : (
                     p.name
                   )}
@@ -153,8 +144,8 @@ export default function Home() {
           </Stagger>
         </Section>
 
-        <Section id="education" title="Education">
-          {education.map((e) => (
+        <Section id="education" title={t.sections.education.label}>
+          {t.education.map((e) => (
             <Reveal key={e.school} className="role">
               <h3 className="role-title">{e.degree}</h3>
               <p className="role-meta">
@@ -164,10 +155,10 @@ export default function Home() {
           ))}
         </Section>
 
-        <Section id="toolkit" title="Toolkit">
+        <Section id="toolkit" title={t.sections.toolkit.label}>
           {toolkit.map(({ area, items }) => (
             <div key={area} className="tech-group">
-              <h3 className="tech-area">{area}</h3>
+              <h3 className="tech-area">{t.toolkit.areas[area]}</h3>
               <Stagger className="tech-list">
                 {items.map(({ name, icon }) => {
                   const { svg, brand, darkBrand } = techIcon(icon);
@@ -179,7 +170,7 @@ export default function Home() {
                       data-dark-brand={darkBrand || undefined}
                     >
                       <span className="tech-icon">{svg}</span>
-                      {name}
+                      {t.toolkit.names[name] ?? name}
                     </StaggerItem>
                   );
                 })}
@@ -188,49 +179,41 @@ export default function Home() {
           ))}
         </Section>
 
-        <Section id="contact" title="Contact">
+        <Section id="contact" title={t.sections.contact.label}>
           <Reveal>
             <p>
-              The best way to reach me is by email at{" "}
-              <a href={`mailto:${site.email}`}>{site.email}</a>. I&apos;m happy to talk about AI products,
-              agentic systems and automation work. Or just use the box at the bottom of the screen.
+              {t.contact.before} <a href={`mailto:${site.email}`}>{site.email}</a>. {t.contact.after}
             </p>
           </Reveal>
           {site.social.length > 0 && (
             <Stagger className="bullets">
               {site.social.map(({ label, href }) => (
                 <StaggerItem key={label}>
-                  <a href={href} target="_blank" rel="noopener noreferrer">{label}</a>
+                  <a href={href} target="_blank" rel="noopener noreferrer">
+                    {label}
+                  </a>
                 </StaggerItem>
               ))}
             </Stagger>
           )}
         </Section>
 
-        <Section id="philosophy" title="Philosophy">
+        <Section id="philosophy" title={t.sections.philosophy.label}>
           <Reveal>
-            <p>
-              Skills can be learned and tools change every year. What doesn&apos;t change is how I work:
-              honestly, carefully, and with the people I build for in mind.
-            </p>
+            <p>{t.philosophy.teaser}</p>
           </Reveal>
           <Reveal>
-            <PhilosophyModal
-              intro={philosophy.intro}
-              statement={philosophy.statement}
-              principles={philosophy.principles}
-              email={site.email}
-            />
+            <PhilosophyModal t={t.philosophy} email={site.email} lang={lang} />
           </Reveal>
         </Section>
 
-        <ConsoleWink />
+        <ConsoleWink message={t.console} />
       </main>
 
-      <SiteFooter name={site.name} fullName={site.fullName} email={site.email} />
+      <SiteFooter fullName={site.fullName} email={site.email} lang={lang} t={t.footer} sections={t.sections} sdg={t.sdg} />
 
-      <AskBar email={site.email} name={site.name} examples={askExamples} />
-      <Terminal sections={sections} email={site.email} />
+      <AskBar email={site.email} t={t.ask} />
+      <Terminal sections={sections} email={site.email} lang={lang} t={t.terminal} sdg={sdgAnswer} />
     </div>
   );
 }

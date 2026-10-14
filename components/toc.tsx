@@ -30,13 +30,13 @@ function useActiveSection(items: TocItem[]) {
 }
 
 /** Sticky contents list on wide screens; a "Contents" button with a full-screen menu on narrow ones. */
-export function Toc({ items }: { items: TocItem[] }) {
+export function Toc({ items, labels }: { items: TocItem[]; labels: { contents: string; close: string } }) {
   const active = useActiveSection(items);
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <nav aria-label="Contents" className="toc-panel">
+      <nav aria-label={labels.contents} className="toc-panel">
         <ul className="toc">
           {items.map(({ id, label }) => (
             <li key={id}>
@@ -65,13 +65,13 @@ export function Toc({ items }: { items: TocItem[] }) {
         aria-controls="toc-menu"
         onClick={() => setOpen((o) => !o)}
       >
-        {open ? "Close" : "Contents"}
+        {open ? labels.close : labels.contents}
       </button>
       <AnimatePresence>
         {open && (
           <motion.nav
             id="toc-menu"
-            aria-label="Contents"
+            aria-label={labels.contents}
             className="fixed inset-0 z-20 overflow-auto bg-ground/90 px-[1.7em] pt-[3.4em] min-[901px]:hidden"
             initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
             animate={{ opacity: 1, backdropFilter: "blur(6px)" }}

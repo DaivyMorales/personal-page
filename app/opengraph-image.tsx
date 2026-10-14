@@ -1,9 +1,13 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { ImageResponse } from "next/og";
+import { en } from "@/content/i18n/en";
 import { site } from "@/content/site";
 
-export const alt = `${site.name} · ${site.tagline}`;
+// The share image is shared by both languages, so it uses the English copy.
+const tagline = "Product AI Engineer";
+
+export const alt = `${site.name} · ${tagline}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -29,10 +33,10 @@ export default function OpengraphImage() {
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
           <img src={portraitSrc} width={88} height={88} alt="" style={{ borderRadius: 999, marginRight: 12 }} />
           <span style={{ fontWeight: 600 }}>{site.name}</span>
-          <span style={{ color: "#8f8f8f" }}>· {site.tagline}</span>
+          <span style={{ color: "#8f8f8f" }}>· {tagline}</span>
         </div>
         <div style={{ display: "flex", fontSize: 64, lineHeight: 1.15, maxWidth: 900 }}>
-          {site.headline}
+          {en.about.quote.text}
         </div>
         <div style={{ display: "flex", height: 1, background: "#ebebeb" }} />
       </div>

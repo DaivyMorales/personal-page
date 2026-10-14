@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import portrait from "@/assets/daivy.jpg";
 import { DotText, type DotPainter } from "@/components/motion/dot-text";
+import type { Locale } from "@/content/i18n/config";
+import type { Dictionary } from "@/content/i18n/en";
 
 function loadImage(src: string) {
   return new Promise<HTMLImageElement>((resolve, reject) => {
@@ -63,28 +65,42 @@ const paintMark: DotPainter = async (o, w, h, family, inkLight) => {
   }
 };
 
-const columns = [
-  {
-    title: "Explore",
-    links: [
-      { label: "About", href: "/#about" },
-      { label: "Experience", href: "/#experience" },
-      { label: "Projects", href: "/#projects" },
-    ],
-  },
-  {
-    title: "More",
-    links: [
-      { label: "Education", href: "/#education" },
-      { label: "Toolkit", href: "/#toolkit" },
-      { label: "How I work", href: "/philosophy" },
-    ],
-  },
-];
-
 /** The site footer, after si.gov's: tagline, sign-up line, link columns, a giant dotted mark. */
-export function SiteFooter({ name, fullName, email }: { name: string; fullName: string; email: string }) {
+export function SiteFooter({
+  fullName,
+  email,
+  lang,
+  t,
+  sections,
+  sdg,
+}: {
+  fullName: string;
+  email: string;
+  lang: Locale;
+  t: Dictionary["footer"];
+  sections: Dictionary["sections"];
+  sdg: Dictionary["sdg"];
+}) {
   const [address, setAddress] = useState("");
+  const home = `/${lang}`;
+  const columns = [
+    {
+      title: t.explore,
+      links: [
+        { label: sections.about.label, href: `${home}#about` },
+        { label: sections.experience.label, href: `${home}#experience` },
+        { label: sections.projects.label, href: `${home}#projects` },
+      ],
+    },
+    {
+      title: t.more,
+      links: [
+        { label: sections.education.label, href: `${home}#education` },
+        { label: sections.toolkit.label, href: `${home}#toolkit` },
+        { label: t.howIWork, href: `${home}/philosophy` },
+      ],
+    },
+  ];
 
   return (
     <footer className="site-footer">
@@ -92,33 +108,33 @@ export function SiteFooter({ name, fullName, email }: { name: string; fullName: 
         <div className="sf-grid">
           <div className="sf-sign">
             <p className="sf-tagline">
-              AI products,
+              {t.tagline[0]}
               <br />
-              built with care.
+              {t.tagline[1]}
             </p>
             <form
               className="sf-form"
               onSubmit={(e) => {
                 e.preventDefault();
-                const body = `Hi ${name}, I'd like to talk. You can reach me at ${address}.`;
-                window.location.href = `mailto:${email}?subject=${encodeURIComponent("Let's talk")}&body=${encodeURIComponent(body)}`;
+                const body = `${t.mailBody} ${address}.`;
+                window.location.href = `mailto:${email}?subject=${encodeURIComponent(t.mailSubject)}&body=${encodeURIComponent(body)}`;
               }}
             >
-              <p className="sf-sub">Leave your email and I&apos;ll write back.</p>
+              <p className="sf-sub">{t.sub}</p>
               <div className="sf-row">
                 <label htmlFor="sf-email" className="sr-only">
-                  Your email address
+                  {t.emailLabel}
                 </label>
                 <input
                   id="sf-email"
                   type="email"
                   required
-                  placeholder="you@example.com"
+                  placeholder={t.placeholder}
                   autoComplete="email"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                 />
-                <button type="submit">Say hi</button>
+                <button type="submit">{t.button}</button>
               </div>
             </form>
           </div>
@@ -137,13 +153,13 @@ export function SiteFooter({ name, fullName, email }: { name: string; fullName: 
           ))}
 
           <div>
-            <h4 className="sf-head">Contact</h4>
+            <h4 className="sf-head">{t.contact}</h4>
             <ul className="sf-list">
               <li>
-                <a href={`mailto:${email}`}>Email me</a>
+                <a href={`mailto:${email}`}>{t.emailMe}</a>
               </li>
               <li>
-                <Link href="/#contact">Contact</Link>
+                <Link href={`${home}#contact`}>{sections.contact.label}</Link>
               </li>
             </ul>
           </div>
@@ -156,13 +172,13 @@ export function SiteFooter({ name, fullName, email }: { name: string; fullName: 
         <div className="sf-legal">
           <span>© {fullName}</span>
           <span className="sf-legal-right">
-            <Link href="/philosophy">How I work</Link>
+            <Link href={`${home}/philosophy`}>{t.howIWork}</Link>
             <span aria-hidden="true">·</span>
             {/* Bach signed his scores "S.D.G.": Soli Deo Gloria. */}
-            <span className="sdg" tabIndex={0} aria-label="S.D.G., Soli Deo Gloria. In Christ I trust.">
+            <span className="sdg" tabIndex={0} aria-label={sdg.aria}>
               <span aria-hidden="true">S.D.G.</span>
               <span className="sdg-reveal" aria-hidden="true">
-                Soli Deo Gloria · <em>In Christ I trust</em>
+                Soli Deo Gloria · <em>{sdg.trust}</em>
               </span>
             </span>
           </span>

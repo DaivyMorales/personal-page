@@ -63,13 +63,19 @@ export function CustomCursor() {
   return <div ref={ref} className="cursor-ring cursor-off" aria-hidden="true" />;
 }
 
-const pageNames: Record<string, string> = { "/": "Daivy", "/philosophy": "How I work" };
-
 /**
  * si.gov's page transition: clicking a link to another page grows a solid circle from the
  * click point, shows the page's name, then shrinks away once the new page is in.
  */
-export function PageIris() {
+export function PageIris({
+  pageNames,
+  langNames,
+}: {
+  /** Label per pathname, e.g. { "/es/philosophy": "Cómo trabajo" }. */
+  pageNames: Record<string, string>;
+  /** Language names by locale, shown when only the language changes. */
+  langNames: Record<string, string>;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLElement>(null);
   const router = useRouter();
@@ -110,7 +116,11 @@ export function PageIris() {
       iris.style.setProperty("--y", `${e.clientY}px`);
       void iris.offsetWidth;
       iris.style.transition = "";
-      labelRef.current!.textContent = pageNames[url.pathname] ?? "";
+      // Switching language (same page, other locale) shows the language's name instead.
+      const [, fromLang, ...fromRest] = location.pathname.split("/");
+      const [, toLang, ...toRest] = url.pathname.split("/");
+      const samePageOtherLang = fromLang !== toLang && fromRest.join("/") === toRest.join("/");
+      labelRef.current!.textContent = samePageOtherLang ? (langNames[toLang] ?? "") : (pageNames[url.pathname] ?? "");
       iris.classList.add("iris-on");
       pending.current = true;
       window.setTimeout(() => router.push(url.pathname + url.hash), 650);
@@ -118,7 +128,7 @@ export function PageIris() {
     // Capture phase, so this runs before Next's <Link> handles the click.
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);
-  }, [router]);
+  }, [router, pageNames, langNames]);
 
   return (
     <div ref={ref} className="iris" aria-hidden="true">

@@ -4,8 +4,8 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
-
-type Principle = { title: string; text: string };
+import type { Locale } from "@/content/i18n/config";
+import type { Dictionary } from "@/content/i18n/en";
 
 const numerals = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
 const ease = [0.7, 0, 0.25, 1] as const;
@@ -19,16 +19,15 @@ const useMounted = () => useSyncExternalStore(noop, () => true, () => false);
  * circle out of the button (like si.gov's page transition) and the principles reveal one by one.
  */
 export function PhilosophyModal({
-  intro,
-  statement,
-  principles,
+  t,
   email,
+  lang,
 }: {
-  intro: string;
-  statement: string;
-  principles: Principle[];
+  t: Dictionary["philosophy"];
   email: string;
+  lang: Locale;
 }) {
+  const { intro, statement, principles } = t;
   const reduce = useReducedMotion();
   const mounted = useMounted();
   const [open, setOpen] = useState(false);
@@ -68,13 +67,13 @@ export function PhilosophyModal({
     <>
       <button ref={buttonRef} type="button" className="pm-teaser" onClick={show} aria-haspopup="dialog">
         <span className="pm-teaser-line">
-          <span className="pm-teaser-words">Want to know how I work?</span>
+          <span className="pm-teaser-words">{t.teaserLine}</span>
           <span className="pm-teaser-arrow" aria-hidden="true">
             ↗
           </span>
         </span>
         <span className="pm-teaser-keys" aria-hidden="true">
-          Honesty · Trust · Integrity · Humility · People · Craft · Ownership · Generosity
+          {t.keys}
         </span>
       </button>
 
@@ -93,7 +92,7 @@ export function PhilosophyModal({
             exit={reduce ? { opacity: 0 } : { clipPath: circle("0px") }}
             transition={{ duration: reduce ? 0.2 : 0.8, ease }}
           >
-            <button ref={closeRef} type="button" className="pm-close" onClick={hide} aria-label="Close">
+            <button ref={closeRef} type="button" className="pm-close" onClick={hide} aria-label={t.close}>
               <span aria-hidden="true">×</span>
               <span className="pm-close-hint" aria-hidden="true">
                 esc
@@ -107,17 +106,20 @@ export function PhilosophyModal({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: reduce ? 0 : 0.45, ease: [0.22, 1, 0.36, 1] }}
               >
-                <p className="pm-kicker">Philosophy</p>
+                <p className="pm-kicker">{t.kicker}</p>
                 <h2 id="pm-title" className="pm-title">
-                  How I work
+                  {t.title}
                 </h2>
                 <p className="pm-intro">{intro}</p>
                 <p className="pm-statement">“{statement}”</p>
                 <p className="pm-links">
-                  <a href={`mailto:${email}`}>Work with me</a>
+                  <a href={`mailto:${email}`}>{t.workWithMe}</a>
                   <span aria-hidden="true">·</span>
-                  <Link href="/philosophy" onClick={() => document.documentElement.style.removeProperty("overflow")}>
-                    Open as a page →
+                  <Link
+                    href={`/${lang}/philosophy`}
+                    onClick={() => document.documentElement.style.removeProperty("overflow")}
+                  >
+                    {t.openAsPage}
                   </Link>
                 </p>
               </motion.div>

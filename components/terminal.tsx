@@ -1,16 +1,21 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { localeCookie, locales, type Locale } from "@/content/i18n/config";
+import type { Dictionary } from "@/content/i18n/en";
 
 export type TerminalSection = { id: string; label: string; hint: string };
 
 type Command = { name: string; hint: string; run: () => void; hidden?: boolean };
 
-// Claude Code's thinking spinner, and some of its kind of verbs.
+// Claude Code's thinking spinner.
 const spinner = ["·", "✢", "✳", "✶", "✻", "✽", "✻", "✶", "✳", "✢"];
-const verbs = ["Reading", "Pondering", "Scrolling", "Browsing", "Wandering", "Perusing", "Skimming"];
+
+/** "Sobre mí" → "sobre-mi": a typeable command name from a section label. */
+const slug = (label: string) =>
+  label.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, "-");
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -36,9 +41,24 @@ function useActiveSection(ids: string[]) {
  * A terminal flavour for the page: a status line in the corner that spins while you scroll,
  * and a slash-command menu (press "/") for jumping around, like Claude Code.
  */
-export function Terminal({ sections, email }: { sections: TerminalSection[]; email: string }) {
+export function Terminal({
+  sections,
+  email,
+  lang,
+  t,
+  sdg,
+}: {
+  sections: TerminalSection[];
+  email: string;
+  lang: Locale;
+  t: Dictionary["terminal"];
+  /** The hidden /sdg command's answer. */
+  sdg: string;
+}) {
   const reduce = useReducedMotion();
   const router = useRouter();
+  const pathname = usePathname();
+  const verbs = t.verbs;
   const ids = useMemo(() => sections.map((s) => s.id), [sections]);
   const active = useActiveSection(ids);
 
@@ -64,7 +84,7 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
       window.removeEventListener("scroll", onScroll);
       clearTimeout(idle);
     };
-  }, []);
+  }, [verbs]);
   useEffect(() => {
     if (!busy || reduce) return;
     const id = setInterval(() => setFrame((f) => (f + 1) % spinner.length), 90);
@@ -84,23 +104,27 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
 
   const commands: Command[] = useMemo(
     () => [
-      ...sections.map((s) => ({ name: s.id, hint: s.hint, run: () => go(s.id) })),
-      { name: "philosophy", hint: "How I work", run: () => router.push("/philosophy") },
-      { name: "email", hint: "Write to me", run: () => (window.location.href = `mailto:${email}`) },
-      { name: "top", hint: "Back to the top", run: () => window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }) },
+      ...sections.map((s) => ({ name: slug(s.label), hint: s.hint, run: () => go(s.id) })),
+      { name: lang === "es" ? "correo" : "email", hint: t.emailHint, run: () => (window.location.href = `mailto:${email}`) },
       {
-        name: "help",
-        hint: "How to use this menu",
-        run: () =>
-          setEcho({
-            mono: true,
-            text: "/        open this menu\n↑ ↓      move up and down\nenter    go there\nesc      close",
-          }),
+        name: lang === "es" ? "arriba" : "top",
+        hint: t.topHint,
+        run: () => window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" }),
       },
+      {
+        name: t.switchName,
+        hint: t.switchHint,
+        run: () => {
+          const other = locales.find((l) => l !== lang)!;
+          document.cookie = `${localeCookie}=${other}; path=/; max-age=31536000; samesite=lax`;
+          router.push(`/${other}${pathname.replace(/^\/[^/]+/, "")}`);
+        },
+      },
+      { name: lang === "es" ? "ayuda" : "help", hint: t.helpHint, run: () => setEcho({ mono: true, text: t.help }) },
       // Not listed; for anyone who found the footer.
-      { name: "sdg", hint: "Soli Deo Gloria", hidden: true, run: () => setEcho({ text: "Soli Deo Gloria. In Christ I trust. ✝" }) },
+      { name: "sdg", hint: "Soli Deo Gloria", hidden: true, run: () => setEcho({ text: sdg }) },
     ],
-    [sections, email, go, reduce, router],
+    [sections, email, go, reduce, router, pathname, lang, t, sdg],
   );
 
   const q = query.replace(/^\//, "").trim().toLowerCase();
@@ -114,7 +138,7 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
   }, []);
 
   // Commands that answer in the window keep it open; the rest close it first.
-  const answersInPlace = (c: Command) => c.name === "sdg" || c.name === "help";
+  const answersInPlace = (c: Command) => c.name === "sdg" || c.name === "help" || c.name === "ayuda";
   const runSelected = () => {
     if (!selected) return;
     if (!answersInPlace(selected)) close();
@@ -145,13 +169,19 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
   return (
     <>
       {/* Status line */}
-      <button type="button" className="statusline" onClick={() => { setEcho(null); setOpen(true); }} aria-label="Open command menu">
+      <button type="button" className="statusline" onClick={() => { setEcho(null); setOpen(true); }} aria-label={t.openMenu}>
         <span className="statusline-glyph" aria-hidden="true">
           {busy ? (reduce ? "✻" : spinner[frame]) : "●"}
         </span>
         <span>{busy ? `${verb}… ${where}` : where}</span>
-        <span className="statusline-read">· {read}% read</span>
-        {!busy && <span className="statusline-hint">· press <kbd>/</kbd> for commands</span>}
+        <span className="statusline-read">
+          · {read}% {t.read}
+        </span>
+        {!busy && (
+          <span className="statusline-hint">
+            · {t.press} <kbd>/</kbd> {t.forCommands}
+          </span>
+        )}
       </button>
 
       <AnimatePresence>
@@ -176,7 +206,7 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
             >
               <div className="term-bar" aria-hidden="true">
                 <span /><span /><span />
-                <em>daivy — commands</em>
+                <em>{t.title}</em>
               </div>
               <label className="term-input">
                 <span aria-hidden="true">&gt;</span>
@@ -200,7 +230,7 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
                       runSelected();
                     }
                   }}
-                  placeholder="/ type a command"
+                  placeholder={t.placeholder}
                   aria-label="Command"
                   aria-controls="term-list"
                   aria-activedescendant={selected ? `cmd-${selected.name}` : undefined}
@@ -228,11 +258,15 @@ export function Terminal({ sections, email }: { sections: TerminalSection[]; ema
                       <span className="term-hint">{c.hint}</span>
                     </li>
                   ))}
-                  {matches.length === 0 && <li className="term-empty">command not found: {q}</li>}
+                  {matches.length === 0 && (
+                    <li className="term-empty">
+                      {t.notFound} {q}
+                    </li>
+                  )}
                 </ul>
               )}
               <p className="term-foot" aria-hidden="true">
-                ↑↓ to move · enter to run · esc to close
+                {t.foot}
               </p>
             </motion.div>
           </>
